@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2012 smartics, Kronseder & Reiner GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Usage</title>
+	</properties>
+	<body>
+    <section name="Usage">
+      <subsection name="POM">
+        <p>
+          Configure the plugin in your <code>pom.xml</code>.
+        </p>
+        <source><![CDATA[<plugin>
+  <groupId>${project.version}</groupId>
+  <artifactId>${project.version}</artifactId>
+  <version>${project.version}</version>
+  <executions>
+    <execution>
+      <id>alias</id>
+      <goals>
+        <goal>alias</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>]]></source>
+        <p>
+          For configuration options please refer to <a href="alias-mojo.html">alias:alias</a>.
+        </p>
+      </subsection>
+
+      <subsection name="Alias-XML">
+        <p>
+          Provide an XML file with your aliases (per default in <tt>src/main/resources/alias.xml</tt>).
+        </p>
+        <source><![CDATA[<aliases>
+  <group name="mvn">
+    <alias>
+      <name>i</name>
+      <command>mvn -T 4 clean install</command>
+      <comment>Installs a project with Maven. Requires a valid Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>s</name>
+      <command>mvn -T 4 initialize site</command>
+      <comment>Creates Maven site. Requires a valid Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>l</name>
+      <command>mvn initialize license:format</command>
+      <comment>Formats licensen headers. Requires a valid Maven-POM.</comment>
+    </alias>
+  </group>
+
+  <group name="integration">
+    <alias>
+      <name>b</name>
+      <command>mvn bugzilla:sync</command>
+      <comment>Syncs Bugzilla product with Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>bi</name>
+      <command>mvn bugzilla:init</command>
+      <comment>Creates product in Bugzilla based on Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>chj</name>
+      <command>mvn hudson:createJobs</command>
+      <comment>Creates Hudson job based on Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>dhj</name>
+      <command>mvn hudson:deleteJobs</command>
+      <comment>Deletes Hudson job based on Maven-POM.</comment>
+    </alias>
+  </group>
+
+  <group name="java">
+    <alias env="windows">
+      <name>j6</name>
+      <command passArgs="false">set JAVA_HOME=%JAVA_HOME_6%</command>
+      <comment>Sets environment variable JAVA_HOME to existing JAVA_HOME_6.</comment>
+    </alias>
+    <alias env="windows">
+      <name>j7</name>
+      <command passArgs="false">set JAVA_HOME=%JAVA_HOME_7%</command>
+      <comment>Sets environment variable JAVA_HOME to existing JAVA_HOME_7.</comment>
+    </alias>
+  </group>
+</aliases>]]></source>
+        <p>
+          The <tt>group</tt> element allows to group aliases to separate them visually in the
+          help listing. The <tt>alias</tt> requires a <tt>name</tt> and a <tt>command</tt>.
+          The comment is optional and not presented in the console listing (see below).
+        </p>
+        <p>
+          The attribute <tt>passArgs</tt> of the <tt>command</tt> element allows to pass
+          additional arguments to the alias call. Per default this is always <tt>true</tt>.
+        </p>
+        <p>
+          The attribute <tt>env</tt> of the alias element allows to tag aliases to be only
+          valid in a specific environment. In the example the <tt>windows</tt> environment
+          will show the java elements, since these aliases a Windows specific.
+        </p>
+      </subsection>
+
+      <subsection name="Console Output">
+        <p>
+          The example above creates a script that defines the following aliases.
+          They can be viewed from the command line by typing 'h' for 'help'.
+        </p>
+        <source><![CDATA[PROMPT>h
+ --- mvn
+ i   = mvn -T 4 clean install [args]
+ s   = mvn -T 4 initialize site [args]
+ l   = mvn initialize license:format [args]
+ --- integration
+ b   = mvn bugzilla:sync [args]
+ bi  = mvn bugzilla:init [args]
+ chj = mvn hudson:createJobs [args]
+ dhj = mvn hudson:deleteJobs [args]
+ --- java
+ j6  = set JAVA_HOME=D:\java\jdk1.6.0_25x64
+ j7  = set JAVA_HOME=D:\java\jdk1.7.0
+ --- help
+ h   = This help.]]></source>
+      </subsection>
+    </section>
+  </body>
+</document>
