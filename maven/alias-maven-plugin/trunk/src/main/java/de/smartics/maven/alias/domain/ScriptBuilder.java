@@ -65,6 +65,16 @@ public interface ScriptBuilder
    */
   void setDocUrl(String docUrl);
 
+  /**
+   * Sets the installation comment flag. If set to <code>true</code> instructs
+   * the script generator to add a comment after the intro text that informs
+   * about the default installation of the script. If set to <code>false</code>
+   * no information is added.
+   *
+   * @param addInstallationComment the installation comment flag.
+   */
+  void setAddInstallationComment(boolean addInstallationComment);
+
   // --- business -------------------------------------------------------------
 
   /**

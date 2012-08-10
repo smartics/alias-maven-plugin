@@ -98,6 +98,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
 
     script.append("@echo off").append(NEWLINE);
     appendAsComment(script, this.commentIntro);
+    appendInstallationComment(script);
 
     for (final AliasGroup group : aliasGroups)
     {
@@ -122,19 +123,38 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     }
 
     helpAlias.append("echo  ").append(helpKey).append(" = This help.");
-
-    if (StringUtils.isNotBlank(docUrl))
-    {
-      helpAlias.append(COMMAND_DELIM)
-          .append("echo For additional information please refer to: ")
-          .append(docUrl);
-    }
+    appendDocUrl(helpAlias);
 
     script.append(helpAlias).append(NEWLINE);
     appendAsComment(script, this.commentExtro);
 
     script.append("@echo on").append(NEWLINE);
     return script.toString();
+  }
+
+  private void appendDocUrl(final StringBuilder helpAlias)
+  {
+    if (StringUtils.isNotBlank(docUrl))
+    {
+      helpAlias.append(COMMAND_DELIM)
+          .append("echo For additional information please refer to: ")
+          .append(docUrl);
+    }
+  }
+
+  private void appendInstallationComment(final StringBuilder script)
+  {
+    if (isAddInstallationComment())
+    {
+      script
+          .append("REM ")
+          .append(
+              "Add this script to the registry to be called on each instantiation of the command shell:")
+          .append(NEWLINE)
+          .append(
+              "reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d PATH_TO_THIS_FILE")
+          .append(NEWLINE);
+    }
   }
 
   private StringBuilder createHelpAliasStringBuffer()

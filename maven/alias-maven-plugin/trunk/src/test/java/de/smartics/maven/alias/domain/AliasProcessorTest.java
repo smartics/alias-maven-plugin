@@ -103,6 +103,11 @@ public class AliasProcessorTest
       throw new UnsupportedOperationException();
     }
 
+    public void setAddInstallationComment(final boolean addInstallationComment)
+    {
+      throw new UnsupportedOperationException();
+    }
+
     // --- business -----------------------------------------------------------
 
     // --- object basics ------------------------------------------------------
