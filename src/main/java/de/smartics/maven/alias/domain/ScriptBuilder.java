@@ -57,6 +57,14 @@ public interface ScriptBuilder
    */
   void setCommentExtro(String extro);
 
+  /**
+   * Sets the URL to additional documention that is displayed in the help
+   * listing of aliases.
+   *
+   * @param docUrl a URL to a documentation page for the user.
+   */
+  void setDocUrl(String docUrl);
+
   // --- business -------------------------------------------------------------
 
   /**

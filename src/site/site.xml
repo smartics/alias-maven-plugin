@@ -35,6 +35,7 @@
       <item name="Home"                href="index.html"/>
       <item name="Goals"               href="plugin-info.html"/>
       <item name="Usage"               href="usage.html"/>
+      <item name="alias XSD"           href="alias-doc.html"/>
       <item name="Accessing Artifacts" href="https://project.smartics.de/projects/projectdoc/references/topic/systems/0010-artifact-server.html"/>
       <item name="All Versions"        href="https://project.smartics.de/public/${project.groupId}/${project.artifactId}/"/>
     </menu>

@@ -48,5 +48,27 @@
         </p>
       </subsection>
     </section>
+
+    <section name="Supported Script Types">
+      <p>
+        The following script types are currently supported.
+        The script types select the scripts to be created by this plugin and are selected
+        via the <a href="alias-mojo.html#scripts">scripts</a> parameter.
+      </p>
+      <subsection name="windows">
+        <p>
+          Creates a script for the Windows environment.
+        </p>
+        <p>
+          Use
+        </p>
+        <source>reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d PATH_TO_ALIAS_SCRIPT\aliases.cmd</source>
+        <p>
+          to register this script to make the aliases available in every opened Windows command shell.
+          Replace <tt>PATH_TO_ALIAS_SCRIPT</tt> with the path to the script. <tt>aliases.cmd</tt> is
+          the generated file in the target folder that is named <tt>windows</tt> per default.
+        </p>
+      </subsection>
+    </section>
   </body>
 </document>
