@@ -38,9 +38,10 @@ import de.smartics.maven.alias.script.WindowsScriptBuilder;
  * Creates an alias script based on the alias configuration.
  *
  * @goal alias
- * @phase process-resources
+ * @phase generate-resources
  * @description Creates an alias script based on the alias configuration.
  *              Supported scripts are: <tt>windows</tt>.
+ * @threadSafe
  * @author <a href="mailto:robert.reiner@smartics.de">Robert Reiner</a>
  * @version $Revision$
  */

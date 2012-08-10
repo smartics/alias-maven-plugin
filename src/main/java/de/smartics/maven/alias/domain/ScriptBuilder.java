@@ -18,7 +18,7 @@ package de.smartics.maven.alias.domain;
 /**
  * Provides an interface to create scripts for aliases.
  */
-public interface ScriptBuilder
+public interface ScriptBuilder extends AliasCollector
 {
   // ********************************* Fields *********************************
 
@@ -76,13 +76,6 @@ public interface ScriptBuilder
   void setAddInstallationComment(boolean addInstallationComment);
 
   // --- business -------------------------------------------------------------
-
-  /**
-   * Adds the alias to the script.
-   *
-   * @param alias the alias to be added.
-   */
-  void addAliases(AliasGroup alias);
 
   /**
    * Returns the script.

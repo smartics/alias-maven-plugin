@@ -69,7 +69,7 @@ public class WindowsScriptBuilderTest
 
   private static AliasGroup createAliasGroup(final Alias alias)
   {
-    final AliasGroup group = new AliasGroup("test");
+    final AliasGroup group = new AliasGroup("test", null);
     group.addAlias(alias);
     return group;
   }
