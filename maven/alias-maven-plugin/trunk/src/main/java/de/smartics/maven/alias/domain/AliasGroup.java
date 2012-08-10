@@ -35,6 +35,11 @@ public final class AliasGroup
   private final String name;
 
   /**
+   * The optional description of the group.
+   */
+  private final String comment;
+
+  /**
    * The list of aliases belonging to this group.
    */
   private final List<Alias> aliases = new ArrayList<Alias>();
@@ -47,10 +52,12 @@ public final class AliasGroup
    * Default constructor.
    *
    * @param name the name of this group.
+   * @param comment the optional description of the group.
    */
-  public AliasGroup(final String name)
+  public AliasGroup(final String name, final String comment)
   {
     this.name = name;
+    this.comment = comment;
   }
 
   // ****************************** Inner Classes *****************************
@@ -69,6 +76,16 @@ public final class AliasGroup
   public String getName()
   {
     return name;
+  }
+
+  /**
+   * Returns the optional description of the group.
+   *
+   * @return the optional description of the group.
+   */
+  public String getComment()
+  {
+    return comment;
   }
 
   /**
@@ -103,7 +120,7 @@ public final class AliasGroup
    */
   public AliasGroup filter(final String env)
   {
-    final AliasGroup clone = new AliasGroup(name);
+    final AliasGroup clone = new AliasGroup(name, comment);
 
     for (final Alias alias : aliases)
     {

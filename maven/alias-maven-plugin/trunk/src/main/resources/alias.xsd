@@ -55,6 +55,25 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element
+        name="comment"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The comment for the group for documentation purpose only. The description may
+            contain any valid XHTML.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+          <xs:sequence
+            minOccurs="0"
+            maxOccurs="unbounded">
+            <xs:any
+              namespace="##any"
+              processContents="lax"></xs:any>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element
         name="alias"
         minOccurs="0"
         maxOccurs="unbounded"

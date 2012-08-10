@@ -90,15 +90,15 @@ public final class AliasesProcessor
    *
    * @param builders the builders to create alias scripts.
    */
-  public void process(final ScriptBuilder... builders)
+  public void process(final AliasCollector... builders)
   {
     final Element root = doc.getRootElement();
 
     for (final Element groupElement : root.getChildren("group", NS_ALIAS))
     {
       final Attribute groupName = groupElement.getAttribute("name");
-
-      final AliasGroup group = new AliasGroup(groupName.getValue());
+      final String comment = readComment(groupElement);
+      final AliasGroup group = new AliasGroup(groupName.getValue(), comment);
       for (final Element aliasElement : groupElement.getChildren("alias",
           NS_ALIAS))
       {
@@ -106,7 +106,7 @@ public final class AliasesProcessor
         group.addAlias(alias);
       }
 
-      for (final ScriptBuilder builder : builders)
+      for (final AliasCollector builder : builders)
       {
         builder.addAliases(group);
       }
@@ -121,16 +121,8 @@ public final class AliasesProcessor
     builder.withName(aliasElement.getChildTextNormalize("name", NS_ALIAS))
         .withCommand(command.getTextNormalize());
 
-    final Element commentElement = aliasElement.getChild("comment", NS_ALIAS);
-    if (commentElement != null)
-    {
-      final XMLOutputter xout = new XMLOutputter();
-      final String comment = xout.outputElementContentString(commentElement);
-      if (StringUtils.isNotBlank(comment))
-      {
-        builder.withComment(comment.trim());
-      }
-    }
+    final String comment = readComment(aliasElement);
+    builder.withComment(comment);
 
     if (env != null)
     {
@@ -143,6 +135,21 @@ public final class AliasesProcessor
     }
 
     return builder.build();
+  }
+
+  private static String readComment(final Element root)
+  {
+    final Element commentElement = root.getChild("comment", NS_ALIAS);
+    if (commentElement != null)
+    {
+      final XMLOutputter xout = new XMLOutputter();
+      final String comment = xout.outputElementContentString(commentElement);
+      if (StringUtils.isNotBlank(comment))
+      {
+        return comment;
+      }
+    }
+    return null;
   }
 
   // --- object basics --------------------------------------------------------
