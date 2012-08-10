@@ -65,6 +65,14 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
   protected String commentIntro;
 
   /**
+   * The installation comment flag. If set to <code>true</code> instructs the
+   * script generator to add a comment after the intro text that informs about
+   * the default installation of the script. If set to <code>false</code> no
+   * information is added.
+   */
+  private boolean addInstallationComment;
+
+  /**
    * The optional extroductional text to be rendered in the generated script as
    * a comment.
    */
@@ -141,6 +149,28 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
   protected final int getMaxAliasNameLength()
   {
     return maxAliasNameLength;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setAddInstallationComment(
+      final boolean addInstallationComment)
+  {
+    this.addInstallationComment = addInstallationComment;
+  }
+
+  /**
+   * Returns the installation comment flag. If set to <code>true</code>
+   * instructs the script generator to add a comment after the intro text that
+   * informs about the default installation of the script. If set to
+   * <code>false</code> no information is added.
+   *
+   * @return the installation comment flag.
+   */
+  protected final boolean isAddInstallationComment()
+  {
+    return addInstallationComment;
   }
 
   // --- business -------------------------------------------------------------

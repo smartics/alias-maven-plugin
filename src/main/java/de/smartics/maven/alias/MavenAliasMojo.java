@@ -108,8 +108,18 @@ public class MavenAliasMojo extends AbstractMojo
   private String intro;
 
   /**
+   * If set to <code>true</code> instructs the script generator to add a comment
+   * after the intro text that informs about the default installation of the
+   * script. If set to <code>false</code> no information is added.
+   *
+   * @parameter default-value="true"
+   * @since 1.0
+   */
+  private boolean addInstallationComment;
+
+  /**
    * The optional text to append to the generated script. No comment markers
-   * allowed.  This text will be written to the generated file as comments.
+   * allowed. This text will be written to the generated file as comments.
    *
    * @parameter
    * @since 1.0
@@ -117,12 +127,12 @@ public class MavenAliasMojo extends AbstractMojo
   private String extro;
 
   /**
-   * A URL to further documentation on this script. This may point to a page
-   * in the developer team's wiki or a generated site in the project's
+   * A URL to further documentation on this script. This may point to a page in
+   * the developer team's wiki or a generated site in the project's
    * documentation.
    * <p>
-   * The URL is presented to the user of the alias script if s/he requests
-   * the help listing.
+   * The URL is presented to the user of the alias script if s/he requests the
+   * help listing.
    * </p>
    *
    * @parameter
@@ -248,6 +258,7 @@ public class MavenAliasMojo extends AbstractMojo
     builder.setCommentIntro(intro);
     builder.setCommentExtro(extro);
     builder.setDocUrl(docUrl);
+    builder.setAddInstallationComment(addInstallationComment);
     return builder;
   }
 

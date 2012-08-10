@@ -146,6 +146,62 @@
  --- help
  h   = This help.]]></source>
       </subsection>
+
+      <subsection name="Additional Information">
+        <p>
+          It is often convenient for a user to have a link for additional information
+          in case the brief information printed to the command line is not of much help.
+          Provide a <a href="alias-mojo.html#docUrl">docUrl parameter</a> to further information.
+        </p>
+        <p>
+          It is also convenient to help the user install the script so that the aliases
+          are available in every command shell. This is activated by default via the
+          <a href="alias-mojo.html#addInstallationComment">addInstallationComment parameter</a>.
+        </p>
+        <p>
+          To provide this additional information for the Windows script you may add the
+          following to add a reference to your project's index page.:
+        </p>
+        <source><![CDATA[<plugin>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
+  <version>${project.version}</version>
+  <executions>
+    <execution>
+      <id>alias</id>
+      <goals>
+        <goal>alias</goal>
+      </goals>
+    </execution>
+    <configuration>
+      <docUrl>\${project.url}</docUrl>
+    </configuration>
+  </executions>
+</plugin>]]></source>
+        <p>
+          Replace <tt>\${project.url}</tt> by any absolute URL if your documentation page
+          exists elsewhere. Per default, no URL information is added.
+        </p>
+        <p>
+          The documentation URL will be rendered like this (using the example from above):
+        </p>
+        <source><![CDATA[PROMPT>h
+ --- mvn
+ i   = mvn -T 4 clean install [args]
+ s   = mvn -T 4 initialize site [args]
+ l   = mvn initialize license:format [args]
+ --- integration
+ b   = mvn bugzilla:sync [args]
+ bi  = mvn bugzilla:init [args]
+ chj = mvn hudson:createJobs [args]
+ dhj = mvn hudson:deleteJobs [args]
+ --- java
+ j6  = set JAVA_HOME=D:\java\jdk1.6.0_25x64
+ j7  = set JAVA_HOME=D:\java\jdk1.7.0
+ --- help
+ h   = This help.
+ For additional information please refer to: http://your.intranet.org/your/path/]]></source>
+      </subsection>
     </section>
   </body>
 </document>
