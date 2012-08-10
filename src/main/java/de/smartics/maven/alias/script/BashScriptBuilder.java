@@ -23,9 +23,9 @@ import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
 
 /**
- * Creates an alias script for Windows.
+ * Creates an alias script for Linux Bash.
  */
-public final class WindowsScriptBuilder extends AbstractScriptBuilder
+public final class BashScriptBuilder extends AbstractScriptBuilder
 {
   // ********************************* Fields *********************************
 
@@ -38,12 +38,12 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
    * The value of this constant is {@value}.
    * </p>
    */
-  public static final String ID = "windows";
+  public static final String ID = "bash";
 
   /**
    * The newline sequence.
    */
-  private static final String NEWLINE = "\r\n";
+  private static final String NEWLINE = "\n";
 
   /**
    * Command delimiter for Windows.
@@ -51,14 +51,9 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
    * The value of this constant is {@value}.
    * </p>
    */
-  private static final String COMMAND_DELIM = " ^& ";
+  private static final String COMMAND_DELIM = " && ";
 
   // --- members --------------------------------------------------------------
-
-  /**
-   * The help key formatted according to {@link #maxAliasNameLength}.
-   */
-  private String helpKey;
 
   // ****************************** Initializer *******************************
 
@@ -69,7 +64,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
    *
    * @param aliasHelpName the alias name to use to print help to the console.
    */
-  public WindowsScriptBuilder(final String aliasHelpName)
+  public BashScriptBuilder(final String aliasHelpName)
   {
     super(ID, aliasHelpName);
   }
@@ -90,19 +85,19 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   public String createScript()
   {
     final int maxAliasNameLength = getMaxAliasNameLength();
-    this.helpKey =
+    final String helpKey =
         String.format("%-" + maxAliasNameLength + 's', aliasHelpName);
 
     final StringBuilder helpAlias = createHelpAliasStringBuffer();
     final StringBuilder script = new StringBuilder(2048);
 
-    script.append("@echo off").append(NEWLINE);
+    script.append("#!/bin/bash").append(NEWLINE);
     appendAsComment(script, this.commentIntro);
     appendInstallationComment(script);
 
     for (final AliasGroup group : aliasGroups)
     {
-      helpAlias.append("echo  --- ").append(group.getName())
+      helpAlias.append("echo \" --- ").append(group.getName()).append('\"')
           .append(COMMAND_DELIM);
       for (final Alias alias : group.getAliases())
       {
@@ -111,7 +106,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
         {
           final String key =
               String.format("%1$-" + maxAliasNameLength + "s", alias.getName());
-          appendAlias(script, alias, key);
+          appendAlias(script, alias);
           appendHelp(helpAlias, alias, key);
         }
       }
@@ -119,16 +114,16 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
 
     if (!aliasGroups.isEmpty())
     {
-      helpAlias.append("echo  --- ").append("help").append(COMMAND_DELIM);
+      helpAlias.append("echo \" --- \"").append("help").append(COMMAND_DELIM);
     }
 
-    helpAlias.append("echo  ").append(helpKey).append(" = This help.");
+    helpAlias.append("echo \" ").append(helpKey).append(" = This help.\"");
     appendDocUrl(helpAlias);
+    helpAlias.append('\''); // We have to close the remembered "'".
 
     script.append(helpAlias).append(NEWLINE);
     appendAsComment(script, this.commentExtro);
 
-    script.append("@echo on").append(NEWLINE);
     return script.toString();
   }
 
@@ -136,9 +131,10 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   {
     if (StringUtils.isNotBlank(docUrl))
     {
-      helpAlias.append(COMMAND_DELIM)
-          .append("echo For additional information please refer to: ")
-          .append(COMMAND_DELIM).append("echo   ").append(docUrl);
+      helpAlias
+          .append(COMMAND_DELIM)
+          .append("echo -e \"For additional information please refer to: \\n  ")
+          .append(docUrl).append('"');
     }
   }
 
@@ -147,12 +143,16 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     if (isAddInstallationComment())
     {
       script
-          .append("REM ")
+          .append("# ")
           .append(
-              "Add this script to the registry to be called on each instantiation of the command shell:")
+              "Add the aliases to your ~/.bashrc or source it from ~/.bash_profile like this:")
+          .append(NEWLINE)
+          .append("#   source PATH_TO_THIS_FILE")
+          .append(NEWLINE)
+          .append("# For further information please refer to")
           .append(NEWLINE)
           .append(
-              "REM  reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d PATH_TO_THIS_FILE")
+              "#   http://tldp.org/LDP/Bash-Beginners-Guide/html/Bash-Beginners-Guide.html")
           .append(NEWLINE);
     }
   }
@@ -160,26 +160,22 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   private StringBuilder createHelpAliasStringBuffer()
   {
     final StringBuilder helpAlias = new StringBuilder(1024);
-    helpAlias.append("doskey ").append(helpKey).append(" = "); // NOPMD
+    helpAlias.append("alias ").append(aliasHelpName).append("='");
+    // Unfortunately we have to remember to close the "'".
     return helpAlias;
   }
 
-  private void appendAlias(final StringBuilder script, final Alias alias,
-      final String key)
+  private void appendAlias(final StringBuilder script, final Alias alias)
   {
-    script.append("doskey ").append(key).append(" = ")
-        .append(alias.getCommand());
-    if (alias.isPassArgs())
-    {
-      script.append(" $*");
-    }
-    script.append(NEWLINE);
+    // Bash always accepts appended arguments. So there is no check for pass.
+    script.append("alias ").append(alias.getName()).append("='")
+        .append(alias.getCommand()).append('\'').append(NEWLINE);
   }
 
   private void appendHelp(final StringBuilder helpAlias, final Alias alias,
       final String key)
   {
-    helpAlias.append("echo  ").append(key).append(" = ")
+    helpAlias.append("echo \" ").append(key).append(" = ")
         .append(alias.getCommand());
 
     if (alias.isPassArgs())
@@ -187,7 +183,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
       helpAlias.append(" [args]");
     }
 
-    helpAlias.append(COMMAND_DELIM);
+    helpAlias.append('"').append(COMMAND_DELIM);
   }
 
   private static void appendAsComment(final StringBuilder script,
@@ -202,7 +198,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     while (tokenizer.hasMoreTokens())
     {
       final String line = tokenizer.nextToken();
-      script.append("REM ").append(line).append(NEWLINE);
+      script.append("# ").append(line).append(NEWLINE);
     }
   }
 

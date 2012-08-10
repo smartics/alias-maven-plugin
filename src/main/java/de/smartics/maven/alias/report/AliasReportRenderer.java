@@ -117,7 +117,7 @@ public final class AliasReportRenderer
     sink.text(messages.getString("report.description"));
     sink.paragraph_();
     sink.paragraph();
-    sink.text(messages.getString("report.further-information"));
+    sink.rawText(messages.getString("report.further-information"));
     sink.paragraph_();
 
     renderSections();

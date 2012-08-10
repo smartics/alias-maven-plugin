@@ -54,11 +54,6 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
   private int maxAliasNameLength;
 
   /**
-   * The help key formatted according to {@link #maxAliasNameLength}.
-   */
-  protected String helpKey;
-
-  /**
    * The optional introduction text to be rendered in the generated script as a
    * comment.
    */

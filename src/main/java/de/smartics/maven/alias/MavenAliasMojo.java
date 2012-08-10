@@ -32,6 +32,7 @@ import org.xml.sax.InputSource;
 
 import de.smartics.maven.alias.domain.AliasesProcessor;
 import de.smartics.maven.alias.domain.ScriptBuilder;
+import de.smartics.maven.alias.script.BashScriptBuilder;
 import de.smartics.maven.alias.script.WindowsScriptBuilder;
 
 /**
@@ -40,7 +41,7 @@ import de.smartics.maven.alias.script.WindowsScriptBuilder;
  * @goal alias
  * @phase generate-resources
  * @description Creates an alias script based on the alias configuration.
- *              Supported scripts are: <tt>windows</tt>.
+ *              Supported scripts are: <tt>windows</tt> and <tt>bash</tt>.
  * @threadSafe
  * @author <a href="mailto:robert.reiner@smartics.de">Robert Reiner</a>
  * @version $Revision$
@@ -236,7 +237,7 @@ public class MavenAliasMojo extends AbstractMojo
   {
     if (scripts == null || scripts.length == 0)
     {
-      return new ScriptBuilder[] { createWindowsScriptBuilder() };
+      scripts = new String[] { WindowsScriptBuilder.ID, BashScriptBuilder.ID };
     }
 
     final ScriptBuilder[] builders = new ScriptBuilder[scripts.length];
@@ -245,17 +246,35 @@ public class MavenAliasMojo extends AbstractMojo
     {
       if (WindowsScriptBuilder.ID.equals(script))
       {
-        builders[i] = createWindowsScriptBuilder();
-        i++;
+        builders[i++] = createWindowsScriptBuilder();
+      }
+      else if (BashScriptBuilder.ID.equals(script))
+      {
+        builders[i++] = createBashScriptBuilder();
+      }
+      else
+      {
+        getLog().info("Skipping unrecognized script type '" + script + "'.");
       }
     }
 
     return builders;
   }
 
-  private WindowsScriptBuilder createWindowsScriptBuilder()
+  private ScriptBuilder createWindowsScriptBuilder()
   {
-    final WindowsScriptBuilder builder = new WindowsScriptBuilder(helpAlias);
+    final ScriptBuilder builder = new WindowsScriptBuilder(helpAlias);
+    return initScriptBuilder(builder);
+  }
+
+  private ScriptBuilder createBashScriptBuilder()
+  {
+    final ScriptBuilder builder = new BashScriptBuilder(helpAlias);
+    return initScriptBuilder(builder);
+  }
+
+  private ScriptBuilder initScriptBuilder(final ScriptBuilder builder)
+  {
     builder.setCommentIntro(intro);
     builder.setCommentExtro(extro);
     builder.setDocUrl(docUrl);
