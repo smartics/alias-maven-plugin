@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://smartics.de/alias/1.0.0"
+  xmlns="http://smartics.de/alias/1.0.0"
+  elementFormDefault="qualified">
+  <xs:element name="aliases">
+    <xs:annotation>
+      <xs:documentation source="description">
+        The container for the groups of aliases.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element
+          name="group"
+          minOccurs="0"
+          maxOccurs="unbounded"
+          type="Group">
+          <xs:annotation>
+            <xs:documentation source="description">
+              Groups aliases and provides a name for them. Used only for
+              documentation purposes.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Group">
+    <xs:annotation>
+      <xs:documentation source="description">
+        A group of aliases provides a name for them. Allows to group aliases in
+        documentation for better readability.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element
+        name="alias"
+        minOccurs="0"
+        maxOccurs="unbounded"
+        type="Alias">
+        <xs:annotation>
+          <xs:documentation source="description">
+            A single alias for a command shell.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute
+      name="name"
+      type="xs:string"
+      use="required">
+      <xs:annotation>
+        <xs:documentation>
+          The name of the group.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Alias">
+    <xs:annotation>
+      <xs:documentation source="description">
+        A single alias for a command shell.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element
+        name="name"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The name of the alias. This is the string sequence to call the
+            command in a shell.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="command">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The command to be executed in an environment.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute
+                name="passArgs"
+                type="xs:boolean"
+                default="true">
+                <xs:annotation>
+                  <xs:documentation>
+                    A flag to indicate to the script generator that it must allow to add arbitrary
+                    arguments to the call. Usually it makes sense to allow this so the default value of the attribute if
+                    omitted is 'true'. In case where your want to disallow adding arguments, choose 'false'.
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element
+        name="comment"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The comment is for documentation purpose only. The description may
+            contain any valid XHTML.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+          <xs:sequence
+            minOccurs="0"
+            maxOccurs="unbounded">
+            <xs:any
+              namespace="##any"
+              processContents="lax"></xs:any>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute
+      name="env"
+      type="xs:string"
+      use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          The name of the environment the alias is defined for. If no environment is specified, the
+          alias is used in all environments. This is useful for tools like Maven or Ant. Some aliases may contains shell
+          specific syntax. In this case use an string that matches a ScriptBuilder implementation.
+
+          Valid values include:
+          windows
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>
