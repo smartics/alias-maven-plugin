@@ -16,7 +16,9 @@
     limitations under the License.
 
 -->
-<aliases>
+<aliases
+  xmlns="http://smartics.de/alias/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <group name="test">
     <alias env="test">
       <name>i</name>
