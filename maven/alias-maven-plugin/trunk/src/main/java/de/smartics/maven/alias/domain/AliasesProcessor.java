@@ -22,6 +22,7 @@ import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 import org.xml.sax.InputSource;
@@ -35,6 +36,12 @@ public final class AliasesProcessor
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
+
+  /**
+   * The alias namespace.
+   */
+  private static final Namespace NS_ALIAS = Namespace
+      .getNamespace("http://smartics.de/alias/1.0.0");
 
   // --- members --------------------------------------------------------------
 
@@ -87,12 +94,13 @@ public final class AliasesProcessor
   {
     final Element root = doc.getRootElement();
 
-    for (final Element groupElement : root.getChildren("group"))
+    for (final Element groupElement : root.getChildren("group", NS_ALIAS))
     {
       final Attribute groupName = groupElement.getAttribute("name");
 
       final AliasGroup group = new AliasGroup(groupName.getValue());
-      for (final Element aliasElement : groupElement.getChildren("alias"))
+      for (final Element aliasElement : groupElement.getChildren("alias",
+          NS_ALIAS))
       {
         final Alias alias = createAlias(aliasElement);
         group.addAlias(alias);
@@ -109,11 +117,11 @@ public final class AliasesProcessor
   {
     final Alias.Builder builder = new Alias.Builder();
     final Attribute env = aliasElement.getAttribute("env");
-    final Element command = aliasElement.getChild("command");
-    builder.withName(aliasElement.getChildTextNormalize("name")).withCommand(
-        command.getTextNormalize());
+    final Element command = aliasElement.getChild("command", NS_ALIAS);
+    builder.withName(aliasElement.getChildTextNormalize("name", NS_ALIAS))
+        .withCommand(command.getTextNormalize());
 
-    final Element commentElement = aliasElement.getChild("comment");
+    final Element commentElement = aliasElement.getChild("comment", NS_ALIAS);
     if (commentElement != null)
     {
       final XMLOutputter xout = new XMLOutputter();
