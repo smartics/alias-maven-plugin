@@ -29,8 +29,8 @@
           Configure the plugin in your <code>pom.xml</code>.
         </p>
         <source><![CDATA[<plugin>
-  <groupId>${project.version}</groupId>
-  <artifactId>${project.version}</artifactId>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
   <version>${project.version}</version>
   <executions>
     <execution>
@@ -48,9 +48,13 @@
 
       <subsection name="Alias-XML">
         <p>
-          Provide an XML file with your aliases (per default in <tt>src/main/resources/alias.xml</tt>).
+          Provide an XML file with your aliases (per default in <tt>src/main/resources/alias.xml</tt>)
+          that follows the rules specified by the <a href="alias-doc.html">alias XSD</a>
+          (the alias XSD is bundled with the plugin JAR).
         </p>
-        <source><![CDATA[<aliases>
+        <source><![CDATA[<aliases
+  xmlns="http://smartics.de/alias/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <group name="mvn">
     <alias>
       <name>i</name>

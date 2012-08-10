@@ -100,7 +100,7 @@ public class MavenAliasMojo extends AbstractMojo
 
   /**
    * The optional text to prepend to the generated script. No comment markers
-   * allowed.
+   * allowed. This text will be written to the generated file as comments.
    *
    * @parameter
    * @since 1.0
@@ -109,12 +109,26 @@ public class MavenAliasMojo extends AbstractMojo
 
   /**
    * The optional text to append to the generated script. No comment markers
-   * allowed.
+   * allowed.  This text will be written to the generated file as comments.
    *
    * @parameter
    * @since 1.0
    */
   private String extro;
+
+  /**
+   * A URL to further documentation on this script. This may point to a page
+   * in the developer team's wiki or a generated site in the project's
+   * documentation.
+   * <p>
+   * The URL is presented to the user of the alias script if s/he requests
+   * the help listing.
+   * </p>
+   *
+   * @parameter
+   * @since 1.0
+   */
+  private String docUrl;
 
   /**
    * The list of scripts to be generated. If not specified all supported script
@@ -233,6 +247,7 @@ public class MavenAliasMojo extends AbstractMojo
     final WindowsScriptBuilder builder = new WindowsScriptBuilder(helpAlias);
     builder.setCommentIntro(intro);
     builder.setCommentExtro(extro);
+    builder.setDocUrl(docUrl);
     return builder;
   }
 

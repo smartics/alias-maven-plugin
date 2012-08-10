@@ -15,20 +15,17 @@
  */
 package de.smartics.maven.alias.script;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
-import de.smartics.maven.alias.domain.ScriptBuilder;
 
 /**
  * Creates an alias script for Windows.
  */
-public final class WindowsScriptBuilder implements ScriptBuilder
+public final class WindowsScriptBuilder extends AbstractScriptBuilder
 {
   // ********************************* Fields *********************************
 
@@ -59,36 +56,9 @@ public final class WindowsScriptBuilder implements ScriptBuilder
   // --- members --------------------------------------------------------------
 
   /**
-   * The list of aliases to add to the script.
-   */
-  private final List<AliasGroup> aliasGroups = new ArrayList<AliasGroup>();
-
-  /**
-   * The alias name to use to print help to the console.
-   */
-  private final String aliasHelpName;
-
-  /**
-   * The maximum length of a registered alias name.
-   */
-  private int maxAliasNameLength;
-
-  /**
    * The help key formatted according to {@link #maxAliasNameLength}.
    */
   private String helpKey;
-
-  /**
-   * The optional introduction text to be rendered in the generated script as a
-   * comment.
-   */
-  private String commentIntro;
-
-  /**
-   * The optional extroductional text to be rendered in the generated script as
-   * a comment.
-   */
-  private String commentExtro;
 
   // ****************************** Initializer *******************************
 
@@ -101,8 +71,7 @@ public final class WindowsScriptBuilder implements ScriptBuilder
    */
   public WindowsScriptBuilder(final String aliasHelpName)
   {
-    this.aliasHelpName = aliasHelpName;
-    maxAliasNameLength = aliasHelpName.length();
+    super(ID, aliasHelpName);
   }
 
   // ****************************** Inner Classes *****************************
@@ -113,59 +82,14 @@ public final class WindowsScriptBuilder implements ScriptBuilder
 
   // --- get&set --------------------------------------------------------------
 
-  /**
-   * {@inheritDoc}
-   */
-  public String getId()
-  {
-    return ID;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setCommentIntro(final String commentIntro)
-  {
-    this.commentIntro = commentIntro;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setCommentExtro(final String commentExtro)
-  {
-    this.commentExtro = commentExtro;
-  }
-
   // --- business -------------------------------------------------------------
-
-  /**
-   * {@inheritDoc}
-   */
-  public void addAliases(final AliasGroup group)
-  {
-    final AliasGroup myGroup = group.filter(ID);
-
-    if (!myGroup.isEmpty())
-    {
-      for (final Alias alias : myGroup.getAliases())
-      {
-        final int length = alias.getName().length();
-        if (length > maxAliasNameLength)
-        {
-          maxAliasNameLength = length;
-        }
-      }
-
-      this.aliasGroups.add(group);
-    }
-  }
 
   /**
    * {@inheritDoc}
    */
   public String createScript()
   {
+    final int maxAliasNameLength = getMaxAliasNameLength();
     this.helpKey =
         String.format("%-" + maxAliasNameLength + 's', aliasHelpName);
 
@@ -199,8 +123,16 @@ public final class WindowsScriptBuilder implements ScriptBuilder
 
     helpAlias.append("echo  ").append(helpKey).append(" = This help.");
 
+    if (StringUtils.isNotBlank(docUrl))
+    {
+      helpAlias.append(COMMAND_DELIM)
+          .append("echo For additional information please refer to: ")
+          .append(docUrl);
+    }
+
     script.append(helpAlias).append(NEWLINE);
     appendAsComment(script, this.commentExtro);
+
     script.append("@echo on").append(NEWLINE);
     return script.toString();
   }

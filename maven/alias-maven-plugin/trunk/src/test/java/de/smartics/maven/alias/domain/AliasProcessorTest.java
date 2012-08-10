@@ -88,6 +88,11 @@ public class AliasProcessorTest
       throw new UnsupportedOperationException();
     }
 
+    public void setDocUrl(final String docUrl)
+    {
+      throw new UnsupportedOperationException();
+    }
+
     public void addAliases(final AliasGroup group)
     {
       aliasGroups.add(group);
