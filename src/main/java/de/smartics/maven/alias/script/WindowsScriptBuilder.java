@@ -152,7 +152,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
               "Add this script to the registry to be called on each instantiation of the command shell:")
           .append(NEWLINE)
           .append(
-              "reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d PATH_TO_THIS_FILE")
+              "REM  reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d PATH_TO_THIS_FILE")
           .append(NEWLINE);
     }
   }
