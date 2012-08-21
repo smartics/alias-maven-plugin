@@ -144,7 +144,8 @@ public class MavenAliasMojo extends AbstractMojo
 
   /**
    * The list of scripts to be generated. If not specified all supported script
-   * types are generated.
+   * types are generated. Supported scripts are: <tt>windows</tt> and
+   * <tt>bash</tt>.
    *
    * @parameter
    * @since 1.0
