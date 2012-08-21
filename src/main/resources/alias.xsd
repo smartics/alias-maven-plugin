@@ -130,8 +130,9 @@
                 <xs:annotation>
                   <xs:documentation>
                     A flag to indicate to the script generator that it must allow to add arbitrary
-                    arguments to the call. Usually it makes sense to allow this so the default value of the attribute if
-                    omitted is 'true'. In case where your want to disallow adding arguments, choose 'false'.
+                    arguments to the call. Usually it makes sense to allow this so the default value of the
+                    attribute if omitted is 'true'. In case where your want to disallow adding arguments, choose
+                    'false'.
                   </xs:documentation>
                 </xs:annotation>
               </xs:attribute>
@@ -166,11 +167,11 @@
       <xs:annotation>
         <xs:documentation>
           The name of the environment the alias is defined for. If no environment is specified, the
-          alias is used in all environments. This is useful for tools like Maven or Ant. Some aliases may contains shell
-          specific syntax. In this case use an string that matches a ScriptBuilder implementation.
+          alias is used in all environments. This is useful for tools like Maven or Ant. Some aliases may
+          contains shell specific syntax. In this case use an string that matches a ScriptBuilder
+          implementation.
 
-          Valid values include:
-          windows
+          Valid values include: windows, bash
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
