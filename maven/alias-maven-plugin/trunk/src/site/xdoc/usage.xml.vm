@@ -125,6 +125,42 @@
         </p>
       </subsection>
 
+      <subsection name="Generated Windows Script">
+        <p>
+          This is the generated alias script for the <code>windows</code> environment:
+        </p>
+        <source><![CDATA[@echo off
+REM Add this script to the registry to be called on each instantiation of the command shell:
+REM reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d D:\Projekte\workspaces\projects\_ENV\aliases.cmd
+REM
+REM D:\>h
+REM  i   = mvn -T 4 clean install [args]
+REM  s   = mvn -T 4 initialize site [args]
+REM  l   = mvn initialize license:format [args]
+REM ---
+REM  b   = mvn bugzilla:sync [args]
+REM  bi  = mvn bugzilla:init [args]
+REM  chj = mvn hudson:createJobs [args]
+REM  cdj = mvn hudson:deleteJobs [args]
+REM ---
+REM  j6  = Set JAVA_HOME to JAVA_HOME_6
+REM  j7  = Set JAVA_HOME to JAVA_HOME_7
+REM ---
+REM  h   = This help.
+
+doskey i   = mvn -T 4 clean install $*
+doskey s   = mvn -T 4 initialize site $*
+doskey l   = mvn initialize license:format $*
+doskey b   = mvn bugzilla:sync $*
+doskey bi  = mvn bugzilla:init $*
+doskey chj = mvn hudson:createJobs $*
+doskey cdj = mvn hudson:deleteJobs $*
+doskey j6  = set JAVA_HOME=%JAVA_HOME_6%
+doskey j7  = set JAVA_HOME=%JAVA_HOME_7%
+doskey h =echo  i   = mvn -T 4 clean install [args] ^& echo  s   = mvn -T 4 initialize site [args] ^& echo  l   = mvn initialize license:format [args] ^& echo --- ^& echo  b   = mvn bugzilla:sync [args] ^& echo  bi  = mvn bugzilla:init [args] ^& echo  hcj = mvn hudson:createJobs [args] ^& echo  hdj = mvn hudson:deleteJobs [args] ^& echo --- ^& echo  j6  = Set JAVA_HOME to JAVA_HOME_6 ^& echo  j7  = Set JAVA_HOME to JAVA_HOME_7 ^& echo --- ^&  echo  h   = This help.
+@echo on]]></source>
+      </subsection>
+
       <subsection name="Console Output">
         <p>
           The example above creates a script that defines the following aliases.
@@ -202,6 +238,34 @@
  h   = This help.
  For additional information please refer to:
    http://your.intranet.org/your/path/]]></source>
+      </subsection>
+
+      <subsection name="Adding a Report">
+ 	   <p>
+ 	     You may add a report to your site that explains the
+ 	     aliases (for instance on the intranet). Add the
+ 	     following report plugin to the site-plugin like
+ 	     this:
+ 	   </p>
+
+       <source><![CDATA[<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-site-plugin</artifactId>
+  <configuration>
+    <reportPlugins>
+      <plugin>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
+        <version>${project.version}</version>
+      </plugin>
+    </reportPlugins>
+  </configuration>
+</plugin>]]></source>
+        <p>
+          This creates the following report for the XML configuration
+          file we showed above:
+        </p>
+        <img src="images/screenshots/report.png"/>
       </subsection>
 
       <subsection name="Include generated Scripts">

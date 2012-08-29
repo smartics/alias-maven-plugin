@@ -117,6 +117,10 @@
           Replace <tt>PATH_TO_ALIAS_SCRIPT</tt> with the path to the script. <tt>aliases.cmd</tt> is
           the generated file in the target folder that is named <tt>windows</tt> per default.
         </p>
+        <p>
+          <strong>Please note that using the file <tt>windows</tt> does not work. Rename it to <tt>alias.cmd</tt>
+          (or any other file with an extension <tt>cmd</tt> or <tt>bat</tt>)!</strong>
+        </p>
       </subsection>
 
       <subsection name="bash">
