@@ -131,7 +131,7 @@
         </p>
         <source><![CDATA[@echo off
 REM Add this script to the registry to be called on each instantiation of the command shell:
-REM reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d D:\Projekte\workspaces\projects\_ENV\aliases.cmd
+REM reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d D:\mypath\aliases.cmd
 REM
 REM D:\>h
 REM  i   = mvn -T 4 clean install [args]

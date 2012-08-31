@@ -153,8 +153,8 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
           .append(NEWLINE)
           .append(
               "REM  reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d"
-                  + " PATH_TO_THIS_FILE.cmd"
-                  + " (e.g. rename 'windows' to 'alias.cmd')").append(NEWLINE);
+                  + " ABSOLUTE_PATH_TO_THIS_FILE.cmd"
+                  + " (i.e. rename 'windows' to 'alias.cmd' and specify an absolute path)").append(NEWLINE);
     }
   }
 
