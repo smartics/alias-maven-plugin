@@ -17,7 +17,7 @@
 
 -->
 <project name="${project.name}">
-  <publishDate position="navigation-bottom" format="dd.MM.yyyy"/>
+  <publishDate position="bottom" format="dd. MMMM yyyy"/>
 
   <bannerLeft>
     <name>${project.name}</name>
@@ -48,48 +48,45 @@
     </menu>
 
     <menu name="Project Documentation">
-      <item name="Project Information"    href="project-info.html" collapse="true">
-        <item name="Project"              href="project-info.html" collapse="false">
-          <item name="Summary"            href="project-summary.html"/>
-          <item name="Build Report"       href="build-report.html"/>
-          <item name="Team"               href="team-list.html"/>
-          <item name="License"            href="license.html"/>
-        </item>
-        <item name="Dependencies"         href="project-info.html" collapse="false">
-          <item name="Dependencies"       href="dependencies.html"/>
-          <item name="Plugins"            href="plugin-management.html"/>
-        </item>
-		<item name="Information Systems"  href="project-info.html" collapse="false">
-          <item name="Source Repository" href="source-repository.html"/>
-          <item name="Issue Management"  href="issue-tracking.html"/>
-          <item name="CI Server"         href="integration.html"/>
-          <item name="Sonar"             href="${sonar-url-project}"/>
-	    </item>
+      <item name="Project Information"  href="project-info.html" collapse="true">
+        <item name="Summary"            href="project-summary.html"/>
+        <item name="Build Report"       href="build-report.html"/>
+        <item name="Team"               href="team-list.html"/>
+        <item name="License"            href="license.html"/>
       </item>
-	  <item name="Project Reports"        href="project-reports.html" collapse="true">
-	    <item name="Source Files"         href="project-reports.html" collapse="false">
-	      <item name="JavaDocs"           href="apidocs/index.html"/>
-	      <item name="Source"             href="xref/index.html"/>
-	      <item name="Change Log"         href="changelog.html"/>
-	      <item name="Developer Activity" href="dev-activity.html"/>
-	      <item name="File Activity"      href="file-activity.html"/>
-	      <item name="Taglist"            href="taglist.html"/>
+      <item name="Project Dependencies" href="project-info.html" collapse="true">
+        <item name="Dependencies"       href="dependencies.html"/>
+        <item name="Plugins"            href="plugin-management.html"/>
+      </item>
+	  <item name="Information Systems"  href="project-info.html" collapse="false">
+        <item name="Source Repository" href="source-repository.html"/>
+        <item name="Issue Management"  href="issue-tracking.html"/>
+        <item name="CI Server"         href="integration.html"/>
+        <item name="Sonar"             href="${sonar-url-project}"/>
+      </item>
+
+      <item name="Source File Reports"  href="project-reports.html" collapse="true">
+        <item name="JavaDocs"           href="apidocs/index.html"/>
+        <item name="Source"             href="xref/index.html"/>
+        <item name="Change Log"         href="changelog.html"/>
+        <item name="Developer Activity" href="dev-activity.html"/>
+        <item name="File Activity"      href="file-activity.html"/>
+        <item name="Taglist"            href="taglist.html"/>
+      </item>
+      <item name="Analysis and Metrics" href="project-reports.html" collapse="true">
+        <item name="Checkstyle"         href="checkstyle.html"/>
+        <item name="PMD"                href="pmd.html"/>
+        <item name="FindBugs"           href="findbugs.html"/>
+        <item name="NCSS"               href="javancss.html"/>
+        <item name="CPD"                href="cpd.html"/>
+        <item name="JDepend"            href="jdepend-report.html"/>
+        <item name="Javadoc Messages"   href="apidoc-report.html"/>
         </item>
-	    <item name="Analysis and Metrics" href="project-reports.html" collapse="false">
-	      <item name="Checkstyle"         href="checkstyle.html"/>
-	      <item name="PMD"                href="pmd.html"/>
-	      <item name="FindBugs"           href="findbugs.html"/>
-	      <item name="NCSS"               href="javancss.html"/>
-	      <item name="CPD"                href="cpd.html"/>
-	      <item name="JDepend"            href="jdepend-report.html"/>
-	      <item name="Javadoc Messages"   href="apidoc-report.html"/>
-        </item>
-	    <item name="Test"            href="project-reports.html" collapse="false">
-          <item name="Test Report"   href="surefire-report.html"/>
-	      <item name="Code Coverage" href="cobertura/index.html"/>
-	      <item name="Javadocs"      href="testapidocs/index.html"/>
-	      <item name="Sources"       href="xref-test/index.html"/>
-        </item>
+      <item name="Test Reports"    href="project-reports.html" collapse="true">
+        <item name="Test Report"   href="surefire-report.html"/>
+        <item name="Code Coverage" href="cobertura/index.html"/>
+        <item name="Javadocs"      href="testapidocs/index.html"/>
+        <item name="Sources"       href="xref-test/index.html"/>
       </item>
     </menu>
   </body>

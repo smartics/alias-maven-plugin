@@ -18,11 +18,11 @@
 -->
 <document>
     <properties>
-      <title>alias-maven-plugin</title>
+      <title>Home</title>
     </properties>
 
     <head profile="http://dublincore.org/documents/dcq-html/">
-      <title>alias-maven-plugin</title>
+      <title>Home</title>
 
       <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
       <link rel="DC.rights copyright" href="license.html" />
@@ -40,50 +40,48 @@
     </head>
 	<body>
 
-    <section name="alias-maven-plugin">
-      <subsection name="Overview">
-        <p>
-          This <a href="http://maven.apache.org/">Maven</a> plugin creates alias scripts
-          from a configurations file.
-        </p>
-        <p>
-          So what problem does this plugin solve? Whenever you type a command in a shell,
-          for instance
-        </p>
-        <source>mvn clean install</source>
-        <p>
-          you could spare time in simply using an alias like this
-        </p>
-        <source>i</source>
-        <p>
-          If you are using license headers that depend on generated build properties,
-          you end up with typing
-        </p>
-        <source>mvn initialize license:format</source>
-        <p>
-          In addition to the number of characters to type, it is also inconvenient to
-          remember the name of the plugin and the fact, that the <tt>initialize</tt>
-          phase has to be called before calling the <tt>format</tt> Mojo. So
-          an alias comes handy:
-        </p>
-        <source>l</source>
-        <p>
-          While creating those aliases in your environment is no rocket science, why
-          should we not share our aliases in our team? By sharing we need to add some
-          comments so that new team members can figure out what aliases exist and
-          what they are good for.
-        </p>
-        <p>
-          This plugin generates shell scripts that set the aliases you define in an
-          XML file (please refer to <a href="usage.html">usage</a> for details)
-          and adds some documentation to it:
-        </p>
-        <ol>
-          <li>By typing 'h' (default key, can be changed), the aliases with their commands are printed.</li>
-          <li>A URL to a team page on the wiki or CMS is printed for further information.</li>
-          <li>A report plugin generates a report with the help on each alias to be referenced.</li>
-        </ol>
-      </subsection>
+    <section name="Overview">
+      <p>
+        This <a href="http://maven.apache.org/">Maven</a> plugin creates alias scripts
+        from a configurations file.
+      </p>
+      <p>
+        So what problem does this plugin solve? Whenever you type a command in a shell,
+        for instance
+      </p>
+      <source>mvn clean install</source>
+      <p>
+        you could spare time in simply using an alias like this
+      </p>
+      <source>i</source>
+      <p>
+        If you are using license headers that depend on generated build properties,
+        you end up with typing
+      </p>
+      <source>mvn initialize license:format</source>
+      <p>
+        In addition to the number of characters to type, it is also inconvenient to
+        remember the name of the plugin and the fact, that the <tt>initialize</tt>
+        phase has to be called before calling the <tt>format</tt> Mojo. So
+        an alias comes handy:
+      </p>
+      <source>l</source>
+      <p>
+        While creating those aliases in your environment is no rocket science, why
+        should we not share our aliases in our team? By sharing we need to add some
+        comments so that new team members can figure out what aliases exist and
+        what they are good for.
+      </p>
+      <p>
+        This plugin generates shell scripts that set the aliases you define in an
+        XML file (please refer to <a href="usage.html">usage</a> for details)
+        and adds some documentation to it:
+      </p>
+      <ol>
+        <li>By typing 'h' (default key, can be changed), the aliases with their commands are printed.</li>
+        <li>A URL to a team page on the wiki or CMS is printed for further information.</li>
+        <li>A report plugin generates a report with the help on each alias to be referenced.</li>
+      </ol>
     </section>
 
     <section name="Accessing generated Scripts">
