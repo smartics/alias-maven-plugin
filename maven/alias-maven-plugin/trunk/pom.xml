@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.smartics.config.pom</groupId>
     <artifactId>pom-java</artifactId>
-    <version>31.2.1</version>
+    <version>31.2.2</version>
     <relativePath />
   </parent>
 
