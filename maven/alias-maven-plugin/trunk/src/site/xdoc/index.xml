@@ -111,7 +111,7 @@
         <p>
           Use
         </p>
-        <source>reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d PATH_TO_ALIAS_SCRIPT\aliases.cmd</source>
+        <source>reg add "hkcu\software\microsoft\command processor" /v Autorun /t reg_sz /d ABSOLUTE_PATH_TO_ALIAS_SCRIPT\aliases.cmd</source>
         <p>
           to register this script to make the aliases available in every opened Windows command shell.
           Replace <tt>PATH_TO_ALIAS_SCRIPT</tt> with the path to the script. <tt>aliases.cmd</tt> is
@@ -120,6 +120,9 @@
         <p>
           <strong>Please note that using the file <tt>windows</tt> does not work. Rename it to <tt>alias.cmd</tt>
           (or any other file with an extension <tt>cmd</tt> or <tt>bat</tt>)!</strong>
+        </p>
+        <p>
+          <strong>Please note that a relative path does not work. An absolute path to the script file is required!</strong>
         </p>
       </subsection>
 
