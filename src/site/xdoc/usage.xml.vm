@@ -285,5 +285,11 @@ doskey h =echo  i   = mvn -T 4 clean install [args] ^& echo  s   = mvn -T 4 init
   </resources>]]></source>
       </subsection>
     </section>
+    <section name="Example Project">
+      <p>
+        If you are looking for a real-life example, please refer to
+        <a href="http://www.smartics.eu/config-smartics-alias">config-smartics-alias</a>.
+      </p>
+    </section>
   </body>
 </document>
