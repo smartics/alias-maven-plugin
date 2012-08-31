@@ -31,6 +31,10 @@
   </bannerRight>
 
   <body>
+    <head>
+      <link rel="SHORTCUT ICON" href="${project.url}/images/logos/favicon.ico"/>
+    </head>
+
     <menu name="Overview">
       <item name="Home"                href="index.html"/>
       <item name="Goals"               href="plugin-info.html"/>
