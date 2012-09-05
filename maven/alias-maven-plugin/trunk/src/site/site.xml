@@ -72,9 +72,6 @@
       <item name="Source File Reports"  href="project-reports.html" collapse="true">
         <item name="JavaDocs"           href="apidocs/index.html"/>
         <item name="Source"             href="xref/index.html"/>
-        <item name="Change Log"         href="changelog.html"/>
-        <item name="Developer Activity" href="dev-activity.html"/>
-        <item name="File Activity"      href="file-activity.html"/>
         <item name="Taglist"            href="taglist.html"/>
       </item>
       <item name="Analysis and Metrics" href="project-reports.html" collapse="true">
