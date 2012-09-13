@@ -19,6 +19,17 @@
 <project name="${project.name}">
   <publishDate position="bottom" format="dd. MMMM yyyy"/>
 
+  <!--
+    The icon for the project is designed by
+              Mattahan (Paul Davey, http://mattahan.deviantart.com)
+    as part of the icon set
+              Buuf (http://findicons.com/pack/50/buuf)
+    and used under
+        Creative Commons Attribution Non-commercial Share Alike (by-nc-sa)
+               (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+
+    Origin: http://findicons.com/icon/4009/be_quiet
+   -->
   <bannerLeft>
     <name>${project.name}</name>
     <src>images/logos/logo.png</src>
@@ -89,6 +100,8 @@
         <item name="Javadocs"      href="testapidocs/index.html"/>
         <item name="Sources"       href="xref-test/index.html"/>
       </item>
+
+      <item name="Credits" href="credits.html"/>
     </menu>
   </body>
 </project>
