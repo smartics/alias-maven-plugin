@@ -16,8 +16,6 @@
 package de.smartics.maven.alias.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -31,7 +29,7 @@ import org.xml.sax.InputSource;
 /**
  * Tests {@link AliasProcessor}.
  */
-public class AliasProcessorTest
+public class AliasExtensionProcessorTest
 {
   // ********************************* Fields *********************************
 
@@ -40,10 +38,6 @@ public class AliasProcessorTest
   // --- members --------------------------------------------------------------
 
   // ****************************** Inner Classes *****************************
-
-  private static final String ALIAS_NAME = "i";
-
-  private static final String ALIAS_COMMAND = "mvn -T 4 clean install";
 
   private static final class FakeBuilder implements ScriptBuilder
   {
@@ -54,6 +48,12 @@ public class AliasProcessorTest
     // --- members ------------------------------------------------------------
 
     private final List<AliasGroup> aliasGroups = new ArrayList<AliasGroup>();
+
+    /**
+     * The collection of extension and their extended aliases.
+     */
+    private final List<ExtensionGroup> extensionGroups =
+        new ArrayList<ExtensionGroup>();
 
     // ***************************** Initializer ******************************
 
@@ -104,7 +104,7 @@ public class AliasProcessorTest
 
     public void setExtensionGroups(final List<ExtensionGroup> extensionGroups)
     {
-      // NOOP
+      this.extensionGroups.addAll(extensionGroups);
     }
 
     // --- business -----------------------------------------------------------
@@ -122,7 +122,7 @@ public class AliasProcessorTest
   {
     try
     {
-      final URL url = AliasProcessorTest.class.getResource(resourceId);
+      final URL url = AliasExtensionProcessorTest.class.getResource(resourceId);
       if (url == null)
       {
         throw new IllegalArgumentException("Resource '" + resourceId
@@ -148,83 +148,34 @@ public class AliasProcessorTest
 
   private static List<Alias> getAliases(final ScriptBuilder[] builders)
   {
-    return ((FakeBuilder) builders[0]).aliasGroups.get(0).getAliases();
+    final List<Alias> aliases = new ArrayList<Alias>();
+    for (final AliasGroup group : ((FakeBuilder) builders[0]).aliasGroups)
+    {
+      aliases.addAll(group.getAliases());
+    }
+
+    return aliases;
+  }
+
+  private static List<ExtensionGroup> getExtensionGroups(final ScriptBuilder[] builders)
+  {
+    return ((FakeBuilder) builders[0]).extensionGroups;
   }
 
   // --- tests ----------------------------------------------------------------
 
   @Test
-  public void readsCommentlessAliases()
+  public void appliesExtensions()
   {
-    final AliasesProcessor uut = createUut("alias-without-comment.xml");
+    final AliasesProcessor uut = createUut("extension-example.xml");
     final ScriptBuilder[] builders = createBuilders();
     uut.process(builders);
 
     final List<Alias> aliases = getAliases(builders);
-    assertEquals(1, aliases.size());
-    final Alias alias = aliases.get(0);
-    assertEquals(ALIAS_NAME, alias.getName());
-    assertEquals(ALIAS_COMMAND, alias.getCommand());
-    assertEquals(true, alias.isPassArgs());
-    assertNull(alias.getComment());
-  }
-
-  @Test
-  public void readsAliasesWithComments()
-  {
-    final AliasesProcessor uut = createUut("alias-with-comment.xml");
-    final ScriptBuilder[] builders = createBuilders();
-    uut.process(builders);
-
-    final List<Alias> aliases = getAliases(builders);
-    assertEquals(1, aliases.size());
-    final Alias alias = aliases.get(0);
-    assertEquals(ALIAS_NAME, alias.getName());
-    assertEquals(ALIAS_COMMAND, alias.getCommand());
-    assertEquals("Installs a project with Maven. Requires a valid Maven-POM.",
-        alias.getComment());
-  }
-
-  @Test
-  public void readsAliasesWithStructuredComments()
-  {
-    final AliasesProcessor uut = createUut("alias-with-structured-comment.xml");
-    final ScriptBuilder[] builders = createBuilders();
-    uut.process(builders);
-
-    final List<Alias> aliases = getAliases(builders);
-    assertEquals(1, aliases.size());
-    final Alias alias = aliases.get(0);
-    assertEquals(ALIAS_NAME, alias.getName());
-    assertEquals(ALIAS_COMMAND, alias.getCommand());
-    final String comment = alias.getComment();
-    assertTrue(comment.contains("Installs a project with Maven."));
-    assertTrue(comment.contains("<b>Requires</b>"));
-  }
-
-  @Test
-  public void readsAliasWithEnv()
-  {
-    final AliasesProcessor uut = createUut("alias-with-env.xml");
-    final ScriptBuilder[] builders = createBuilders();
-    uut.process(builders);
-
-    final List<Alias> aliases = getAliases(builders);
-    assertEquals(1, aliases.size());
-    final Alias alias = aliases.get(0);
-    assertEquals("test", alias.getEnv());
-  }
-
-  @Test
-  public void readsAliasWithPassArgs()
-  {
-    final AliasesProcessor uut = createUut("alias-with-pass.xml");
-    final ScriptBuilder[] builders = createBuilders();
-    uut.process(builders);
-
-    final List<Alias> aliases = getAliases(builders);
-    assertEquals(1, aliases.size());
-    final Alias alias = aliases.get(0);
-    assertEquals(false, alias.isPassArgs());
+    assertEquals(3, aliases.size());
+    final List<ExtensionGroup> extensionGroups = getExtensionGroups(builders);
+    assertEquals(1, extensionGroups.size());
+    final ExtensionGroup extensionGroup = extensionGroups.get(0);
+    assertEquals(3, extensionGroup.getAliases().size());
   }
 }

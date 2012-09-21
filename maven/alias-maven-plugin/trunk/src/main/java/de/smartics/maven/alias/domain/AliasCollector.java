@@ -15,6 +15,8 @@
  */
 package de.smartics.maven.alias.domain;
 
+import java.util.List;
+
 /**
  * Provides an interface to create scripts for aliases.
  */
@@ -40,6 +42,14 @@ public interface AliasCollector
    * @param alias the alias to be added.
    */
   void addAliases(AliasGroup alias);
+
+  /**
+   * Sets the extension groups to the collector.
+   *
+   * @param extensionGroups the groups that map an alias extension to a group of
+   *          extended aliases.
+   */
+  void setExtensionGroups(List<ExtensionGroup> extensionGroups);
 
   // --- object basics --------------------------------------------------------
 

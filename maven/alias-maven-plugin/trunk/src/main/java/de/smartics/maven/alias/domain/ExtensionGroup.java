@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.smartics.maven.alias.report;
+package de.smartics.maven.alias.domain;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import de.smartics.maven.alias.domain.AliasCollector;
-import de.smartics.maven.alias.domain.AliasGroup;
-import de.smartics.maven.alias.domain.ExtensionGroup;
-
 /**
- * Collects alias information.
+ * A group of extended aliases.
  */
-public final class ReportAliasCollector implements AliasCollector,
-    Iterable<AliasGroup>
+public final class ExtensionGroup
 {
   // ********************************* Fields *********************************
 
@@ -36,15 +30,14 @@ public final class ReportAliasCollector implements AliasCollector,
   // --- members --------------------------------------------------------------
 
   /**
-   * The list of aliases to add to the script.
+   * The extension that has been applied.
    */
-  private final List<AliasGroup> aliasGroups = new ArrayList<AliasGroup>();
+  private final AliasExtension extension;
 
   /**
-   * The collection of extension and their extended aliases.
+   * The list of extended aliases.
    */
-  private final List<ExtensionGroup> extensionGroups =
-      new ArrayList<ExtensionGroup>();
+  private final List<Alias> aliases = new ArrayList<Alias>();
 
   // ****************************** Initializer *******************************
 
@@ -52,9 +45,18 @@ public final class ReportAliasCollector implements AliasCollector,
 
   /**
    * Default constructor.
+   *
+   * @param extension the extension that has been applied.
+   * @throws NullPointerException if {@code extension} is <code>null</code>.
    */
-  public ReportAliasCollector()
+  public ExtensionGroup(final AliasExtension extension)
+    throws NullPointerException
   {
+    if (extension == null)
+    {
+      throw new NullPointerException("'extension' must not be 'null'.");
+    }
+    this.extension = extension;
   }
 
   // ****************************** Inner Classes *****************************
@@ -66,35 +68,53 @@ public final class ReportAliasCollector implements AliasCollector,
   // --- get&set --------------------------------------------------------------
 
   /**
-   * {@inheritDoc}
+   * Returns the list of extended aliases.
+   *
+   * @return the list of extended aliases.
    */
-  public void setExtensionGroups(
-      final List<ExtensionGroup> extensionGroups)
+  public List<Alias> getAliases()
   {
-    this.extensionGroups.addAll(extensionGroups);
+    return aliases;
+  }
+
+  /**
+   * Returns the extension that has been applied.
+   *
+   * @return the extension that has been applied.
+   */
+  public AliasExtension getExtension()
+  {
+    return extension;
   }
 
   // --- business -------------------------------------------------------------
 
   /**
-   * {@inheritDoc}
+   * Checks whether or not this group has aliases.
+   *
+   * @return <code>true</code> if the group contains at least one alias,
+   *         <code>false</code> otherwise.
    */
-  public void addAliases(final AliasGroup group)
+  public boolean isEmpty()
   {
-    if (!group.isEmpty())
-    {
-      this.aliasGroups.add(group);
-    }
+    return aliases.isEmpty();
   }
 
   /**
-   * Returns an iterator over the collected alias groups.
+   * Adds the given alias to hte extension group if the extension is applicable
+   * to the alias.
    *
-   * @return an iterator over the collected alias groups.
+   * @param group the name of the group the alias belongs to (may be
+   *          <code>null</code>).
+   * @param alias the alias to check for applicability.
    */
-  public Iterator<AliasGroup> iterator()
+  public void addAlias(final String group, final Alias alias)
   {
-    return aliasGroups.iterator();
+    if (extension.isApplicable(group, alias))
+    {
+      final Alias extendedAlias = extension.apply(group, alias);
+      aliases.add(extendedAlias);
+    }
   }
 
   // --- object basics --------------------------------------------------------
