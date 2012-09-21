@@ -15,12 +15,17 @@
  */
 package de.smartics.maven.alias.script;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
+import de.smartics.maven.alias.domain.AliasesProcessor;
 
 /**
  * Creates an alias script for Windows.
@@ -53,6 +58,12 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
    */
   private static final String COMMAND_DELIM = " ^& ";
 
+  /**
+   * Map with replacements for the help text.
+   */
+  private static final Map<String, String> HELP_ALIAS_COMMAND_REPLACEMENTS =
+      new HashMap<String, String>();
+
   // --- members --------------------------------------------------------------
 
   /**
@@ -61,6 +72,15 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   private String helpKey;
 
   // ****************************** Initializer *******************************
+
+  static
+  {
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put("$T", ":");
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put(">", "to");
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put("&", ";");
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put(AliasesProcessor.BELL_VALUE,
+        AliasesProcessor.BELL_VARIABLE);
+  }
 
   // ****************************** Constructors ******************************
 
@@ -154,7 +174,8 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
           .append(
               "REM  reg add \"hkcu\\software\\microsoft\\command processor\" /v Autorun /t reg_sz /d"
                   + " ABSOLUTE_PATH_TO_THIS_FILE.cmd"
-                  + " (i.e. rename 'windows' to 'alias.cmd' and specify an absolute path)").append(NEWLINE);
+                  + " (i.e. rename 'windows' to 'alias.cmd' and specify an absolute path)")
+          .append(NEWLINE);
     }
   }
 
@@ -181,7 +202,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
       final String key)
   {
     helpAlias.append("echo  ").append(key).append(" = ")
-        .append(alias.getCommand());
+        .append(escapeCommandForHelp(alias.getCommand()));
 
     if (alias.isPassArgs())
     {
@@ -189,6 +210,20 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     }
 
     helpAlias.append(COMMAND_DELIM);
+  }
+
+  private String escapeCommandForHelp(final String command)
+  {
+
+    String escapedCommand = command;
+    for (final Iterator<Entry<String, String>> iterator =
+        HELP_ALIAS_COMMAND_REPLACEMENTS.entrySet().iterator(); iterator
+        .hasNext();)
+    {
+      final Entry<String, String> entry = iterator.next();
+      escapedCommand = escapedCommand.replace(entry.getKey(), entry.getValue());
+    }
+    return escapedCommand;
   }
 
   private static void appendAsComment(final StringBuilder script,
