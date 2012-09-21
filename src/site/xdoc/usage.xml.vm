@@ -183,6 +183,17 @@ doskey h =echo  i   = mvn -T 4 clean install [args] ^& echo  s   = mvn -T 4 init
  h   = This help.]]></source>
       </subsection>
 
+      <subsection name="Tipps and Tricks">
+	      <ul>
+	      	<li>
+	        	If you want to ring a bell after a command has finished you can add
+	        	the placeholder ${bell} in conjunction with an echo after a command
+	        	delimiter (e.g. <code>$T echo ${bell}</code> for windows).
+	        </li>
+	      </ul>
+      </subsection>
+
+
       <subsection name="Additional Information">
         <p>
           It is often convenient for a user to have a link for additional information
