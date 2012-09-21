@@ -68,10 +68,19 @@ public final class ReportAliasCollector implements AliasCollector,
   /**
    * {@inheritDoc}
    */
-  public void setExtensionGroups(
-      final List<ExtensionGroup> extensionGroups)
+  public void setExtensionGroups(final List<ExtensionGroup> extensionGroups)
   {
     this.extensionGroups.addAll(extensionGroups);
+  }
+
+  /**
+   * Returns the list of extension groups.
+   *
+   * @return the list of extension groups.
+   */
+  public List<ExtensionGroup> getExtensionGroups()
+  {
+    return extensionGroups;
   }
 
   // --- business -------------------------------------------------------------
