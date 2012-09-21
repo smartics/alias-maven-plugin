@@ -49,7 +49,13 @@
     <menu name="Overview">
       <item name="Home"                href="index.html"/>
       <item name="Goals"               href="plugin-info.html"/>
-      <item name="Usage"               href="usage.html"/>
+      <item name="Usage" href="" collapse="false">
+        <item name="Basic"               href="usage.html"/>
+        <item name="Extensions"          href="extensions.html"/>
+        <item name="Report"              href="report.html"/>
+      </item>
+      <item name="Tips"                href="tips.html"/>
+      <item name="Example"             href="example.html"/>
       <item name="alias XSD"           href="alias-doc.html"/>
       <item name="Accessing Artifacts" href="https://project.smartics.de/projects/projectdoc/references/topic/systems/0010-artifact-server.html"/>
       <item name="All Versions"        href="https://project.smartics.de/public/${project.groupId}/${project.artifactId}/"/>
@@ -73,7 +79,7 @@
         <item name="Dependencies"       href="dependencies.html"/>
         <item name="Plugins"            href="plugin-management.html"/>
       </item>
-	  <item name="Information Systems"  href="project-info.html" collapse="false">
+	  <item name="Information Systems"  href="project-info.html" collapse="true">
         <item name="Source Repository" href="source-repository.html"/>
         <item name="Issue Management"  href="issue-tracking.html"/>
         <item name="CI Server"         href="integration.html"/>

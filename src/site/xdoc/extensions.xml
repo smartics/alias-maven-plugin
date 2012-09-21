@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2012 smartics, Kronseder & Reiner GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Alias Extensions</title>
+	</properties>
+	<body>
+    <section name="Overview">
+      <p>
+        Extensions allow to modified aliases. The extended aliases are added in
+        addition to the original alias.
+      </p>
+    </section>
+
+    <section name="Example with Extension">
+      <source><![CDATA[<aliases
+  xmlns="http://smartics.de/alias/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <extension env="windows">
+    <name>aq</name>
+    <template>PENDING {@cmd} PENDING</template>
+    <comment>and-quit: Launches the command and closes the shell on successful termination. On error the shell is turned red and beeps for attention.</comment>
+    <apply-to>
+      <group>mvn</group>
+      <alias>b</alias>
+    </apply-to>
+  </extension>
+
+  <group name="mvn">
+    <alias>
+      <name>i</name>
+      <command>mvn -T 4 clean install</command>
+      <comment>Installs a project with Maven. Requires a valid Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>s</name>
+      <command>mvn -T 4 initialize site</command>
+      <comment>Creates Maven site. Requires a valid Maven-POM.</comment>
+    </alias>
+    <alias>
+      <name>l</name>
+      <command>mvn initialize license:format</command>
+      <comment>Formats licensen headers. Requires a valid Maven-POM.</comment>
+    </alias>
+  </group>
+
+  <group name="integration">
+    <alias>
+      <name>b</name>
+      <command>mvn bugzilla:sync</command>
+      <comment>Syncs Bugzilla product with Maven-POM.</comment>
+    </alias>
+
+    ...
+  </group>
+</aliases>]]></source>
+      <p>
+        The <code>environment</code> works as a guard to make sure that the
+        extension is applied only to aliases of the specified environment.
+        If no <code>environment</code> the extension is applied to all
+        environments.
+      </p>
+      <p>
+        The <code>name</code> of the extension is appended the name of the
+        alias the extension is applied to. That is if the name of the alias
+        is <code>i</code> and the name of the extension is <code>aq</code>
+        the name of the extended alias is <code>iaq</code>.
+      </p>
+      <p>
+        The template is applied to the alias command. The place holder
+        <code>{@cmd}</code> is the location where the original alias command
+        is written to.
+      </p>
+      <p>
+        The optional comment is for documentation purpose.
+      </p>
+      <p>
+        The <code>apply-to</code> specifies the aliases the extension is
+        applied to. If the name of a group is specified with the
+        <code>group</code> element, the extension is applied to all aliases
+        of that group. If the element is a <code>alias</code>, the extension
+        is only applied to this specific alias.
+      </p>
+    </section>
+  </body>
+</document>
