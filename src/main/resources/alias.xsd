@@ -19,8 +19,8 @@
 
 <xs:schema
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://smartics.de/alias/1.0.0"
-  xmlns="http://smartics.de/alias/1.0.0"
+  targetNamespace="http://smartics.de/alias/1.1.0"
+  xmlns="http://smartics.de/alias/1.1.0"
   elementFormDefault="qualified">
   <xs:element name="aliases">
     <xs:annotation>
@@ -30,6 +30,17 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
+        <xs:element
+          name="extension"
+          minOccurs="0"
+          maxOccurs="unbounded"
+          type="Extension">
+          <xs:annotation>
+            <xs:documentation source="description">
+              Extensions to aliases.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
         <xs:element
           name="group"
           minOccurs="0"
@@ -45,6 +56,120 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+  <xs:complexType name="Extension">
+    <xs:annotation>
+      <xs:documentation source="description">
+        An extension allows to extend a command of an alias. The extended
+        version is added as an additional alias.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element
+        name="name"
+        maxOccurs="unbounded"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The name of the extension. The string is appended to the alias
+            name to create an extended version of the alias.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element
+        name="template"
+        maxOccurs="unbounded"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The name template to extend a matching alias command. The place
+            holder {@cmd} specifies the location where the command will be
+            written to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element
+        name="comment"
+        minOccurs="0">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The comment for the extension. The description may contain any
+            valid XHTML.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+          <xs:sequence
+            minOccurs="0"
+            maxOccurs="unbounded">
+            <xs:any
+              namespace="##any"
+              processContents="lax"></xs:any>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element
+        name="apply-to"
+        minOccurs="0"
+        maxOccurs="1"
+        type="ApplyTo">
+        <xs:annotation>
+          <xs:documentation source="description">
+            Specifies the group and alias names the extension will be applied
+            to.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute
+      name="env"
+      type="xs:string"
+      use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          The name of the environment the extension can be applied to. If no environment is specified, the
+          extension is applied to every alias of all environments. Some extensions may
+          contains shell specific syntax. In this case use an string that matches a ScriptBuilder
+          implementation.
+
+          Valid values include: windows, bash
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ApplyTo">
+    <xs:annotation>
+      <xs:documentation source="description">
+        Lists the name of groups and aliases an extension is applied to.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element
+        name="group"
+        minOccurs="0"
+        maxOccurs="unbounded"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The name of a group. The extension is applied to all members of
+            the group (as long as the environment of the extension matches).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element
+        name="alias"
+        minOccurs="0"
+        maxOccurs="unbounded"
+        type="xs:string">
+        <xs:annotation>
+          <xs:documentation source="description">
+            The name of an aliast he extension is applied to (as long as the
+            environment of the extension matches).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:complexType name="Group">
     <xs:annotation>
