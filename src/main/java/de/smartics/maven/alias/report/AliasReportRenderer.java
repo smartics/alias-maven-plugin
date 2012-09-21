@@ -23,7 +23,9 @@ import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
+import de.smartics.maven.alias.domain.AliasExtension;
 import de.smartics.maven.alias.domain.AliasGroup;
+import de.smartics.maven.alias.domain.ExtensionGroup;
 
 /**
  * Renders the alias report.
@@ -120,13 +122,15 @@ public final class AliasReportRenderer
     sink.rawText(messages.getString("report.further-information"));
     sink.paragraph_();
 
-    renderSections();
+    renderAliasGroups();
+
+    renderExtensions();
 
     renderFooter();
     sink.section1_();
   }
 
-  private void renderSections()
+  private void renderAliasGroups()
   {
     for (final AliasGroup group : collector)
     {
@@ -136,7 +140,7 @@ public final class AliasReportRenderer
       sink.sectionTitle2_();
 
       final String comment = group.getComment();
-      if(comment != null)
+      if (comment != null)
       {
         sink.paragraph();
         sink.rawText(comment);
@@ -234,6 +238,40 @@ public final class AliasReportRenderer
     if (StringUtils.isNotBlank(footerText))
     {
       sink.rawText(footerText);
+    }
+  }
+
+  private void renderExtensions()
+  {
+    for (final ExtensionGroup group : collector.getExtensionGroups())
+    {
+      final AliasExtension extension = group.getExtension();
+
+      final String sectionName = extension.getName();
+
+      sink.sectionTitle2();
+      sink.text("..." + sectionName);
+      final String env = extension.getEnv();
+      if (StringUtils.isNotBlank(env))
+      {
+        sink.text(" (" + env + ')');
+      }
+      sink.sectionTitle2_();
+
+      final String comment = extension.getComment();
+      if (comment != null)
+      {
+        sink.paragraph();
+        sink.rawText(comment);
+        sink.paragraph_();
+      }
+
+      renderTableStart();
+      for (final Alias alias : group.getAliases())
+      {
+        renderTableRow(alias);
+      }
+      renderTableEnd();
     }
   }
 
