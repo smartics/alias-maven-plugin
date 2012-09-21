@@ -18,11 +18,16 @@ package de.smartics.maven.alias.script;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import de.smartics.maven.alias.domain.Alias;
+import de.smartics.maven.alias.domain.AliasExtension;
 import de.smartics.maven.alias.domain.AliasGroup;
+import de.smartics.maven.alias.domain.ExtensionGroup;
 
 /**
  * Tests {@link WindowsScriptBuilder}.
@@ -33,6 +38,11 @@ public class WindowsScriptBuilderTest
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
+
+  /**
+   *
+   */
+  private static final String ALIAS_GROUP_NAME = "test";
 
   private static final String ALIAS_COMMAND = "command";
 
@@ -69,7 +79,7 @@ public class WindowsScriptBuilderTest
 
   private static AliasGroup createAliasGroup(final Alias alias)
   {
-    final AliasGroup group = new AliasGroup("test", null);
+    final AliasGroup group = new AliasGroup(ALIAS_GROUP_NAME, null);
     group.addAlias(alias);
     return group;
   }
@@ -151,5 +161,29 @@ public class WindowsScriptBuilderTest
     assertTrue(script.contains("doskey any = command"));
     assertTrue(script
         .contains("doskey h   = echo  --- test ^& echo  any = command ^& echo  --- help ^& echo  h   = This help."));
+  }
+
+  @Test
+  public void appliesExtensions()
+  {
+    final Alias alias =
+        new Alias.Builder().withName(ALIAS_NAME).withCommand(ALIAS_COMMAND)
+            .withPassArgs(false).build();
+    final AliasGroup group = createAliasGroup(alias);
+    uut.addAliases(group);
+
+    final List<ExtensionGroup> extensionGroups =
+        new ArrayList<ExtensionGroup>();
+    final AliasExtension extension =
+        (new AliasExtension.Builder()).withName("xx")
+            .withTemplate("xxx {@cmd} yyy").addGroup(ALIAS_GROUP_NAME).withComment("Does xxx and yyy.").build();
+    final ExtensionGroup extensionGroup = new ExtensionGroup(extension);
+    extensionGroup.addAlias(ALIAS_GROUP_NAME, alias);
+    extensionGroups.add(extensionGroup);
+    uut.setExtensionGroups(extensionGroups);
+
+    final String expectedCommand = "doskey anyxx = xxx " + ALIAS_COMMAND + " yyy";
+    final String script = uut.createScript();
+    assertTrue(script.contains(expectedCommand));
   }
 }

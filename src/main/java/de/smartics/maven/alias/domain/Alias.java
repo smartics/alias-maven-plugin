@@ -114,6 +114,27 @@ public final class Alias
 
     // ***************************** Constructors *****************************
 
+    /**
+     * Default constructor.
+     *
+     * @param alias
+     */
+    public Builder()
+    {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param alias the alias to initialize with.
+     */
+    public Builder(final Alias alias)
+    {
+      withName(alias.name).withCommand(alias.command)
+          .withComment(alias.comment).withEnv(alias.env)
+          .withPassArgs(alias.passArgs);
+    }
+
     // ***************************** Inner Classes ****************************
 
     // ******************************** Methods *******************************
@@ -150,9 +171,9 @@ public final class Alias
      * Sets the optional comment to be used for reports that provides detailed
      * information about the alias and the context of its usage.
      *
-     * @param comment the optional comment to be used for reports that
-     *          provides detailed information about the alias and the context of
-     *          its usage.
+     * @param comment the optional comment to be used for reports that provides
+     *          detailed information about the alias and the context of its
+     *          usage.
      * @return a reference to the builder.
      */
     public Builder withComment(final String comment)
@@ -176,8 +197,8 @@ public final class Alias
     /**
      * Sets the flag that allows arguments to be appended to the command.
      *
-     * @param passArgs the flag that allows arguments to be
-     *          appended to the command.
+     * @param passArgs the flag that allows arguments to be appended to the
+     *          command.
      * @return a reference to the builder.
      */
     public Builder withPassArgs(final boolean passArgs)
@@ -192,10 +213,10 @@ public final class Alias
      * Creates an alias instance.
      *
      * @return the requested instance build by this builders properties.
-     * @throws IllegalStateException if {@link #withName(String) name} or
+     * @throws IllegalArgumentException if {@link #withName(String) name} or
      *           {@link #withCommand(String) command} is blank (or both).
      */
-    public Alias build() throws IllegalStateException
+    public Alias build() throws IllegalArgumentException
     {
       final boolean nameIsBlank = StringUtils.isBlank(name);
       final boolean commandIsBlank = StringUtils.isBlank(command);

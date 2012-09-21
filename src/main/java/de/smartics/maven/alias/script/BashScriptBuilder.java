@@ -77,6 +77,12 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
 
   // --- get&set --------------------------------------------------------------
 
+  @Override
+  protected Object getCommandDelim()
+  {
+    return COMMAND_DELIM;
+  }
+
   // --- business -------------------------------------------------------------
 
   /**
@@ -111,6 +117,8 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
         }
       }
     }
+
+    appendExtensions(helpAlias, script);
 
     if (!aliasGroups.isEmpty())
     {
@@ -167,9 +175,21 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
 
   private void appendAlias(final StringBuilder script, final Alias alias)
   {
+    appendAlias(script, alias, null);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected void appendAlias(final StringBuilder script, final Alias alias,
+      final String key)
+  {
     // Bash always accepts appended arguments. So there is no check for pass.
-    script.append("alias ").append(alias.getName()).append("='")
-        .append(alias.getCommand()).append('\'').append(NEWLINE);
+    script.append("alias ").append(alias.getName()).append("='");
+
+    // FIXME: Howto insert the command line args within the command?
+    final String command = alias.getCommand().replace("{@args}", "");
+    script.append(command).append('\'').append(NEWLINE);
   }
 
   private void appendHelp(final StringBuilder helpAlias, final Alias alias,

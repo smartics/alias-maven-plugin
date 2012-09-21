@@ -18,8 +18,12 @@ package de.smartics.maven.alias.script;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.plexus.util.StringUtils;
+
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
+import de.smartics.maven.alias.domain.ExtensionGroup;
 import de.smartics.maven.alias.domain.ScriptBuilder;
 
 /**
@@ -78,6 +82,12 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    * aliases.
    */
   protected String docUrl;
+
+  /**
+   * The collection of extension and their extended aliases.
+   */
+  protected final List<ExtensionGroup> extensionGroups =
+      new ArrayList<ExtensionGroup>();
 
   // ****************************** Initializer *******************************
 
@@ -168,6 +178,15 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
     return addInstallationComment;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public final void setExtensionGroups(
+      final List<ExtensionGroup> extensionGroups)
+  {
+    this.extensionGroups.addAll(extensionGroups);
+  }
+
   // --- business -------------------------------------------------------------
 
   /**
@@ -191,6 +210,77 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
       this.aliasGroups.add(group);
     }
   }
+
+  /**
+   * Appends extensions to the script.
+   *
+   * @param helpAlias the buffer for help messages.
+   * @param script the script to append to.
+   */
+  protected final void appendExtensions(final StringBuilder helpAlias,
+      final StringBuilder script)
+  {
+    // FIXME echo may not be correct for every script...
+    final List<ExtensionGroup> filteredGroups = filter(extensionGroups);
+    if (!filteredGroups.isEmpty())
+    {
+      helpAlias.append("echo  --- ALIAS EXTENSIONS").append(getCommandDelim());
+
+      for (final ExtensionGroup extension : filteredGroups)
+      {
+        helpAlias.append("echo  ...")
+            .append(extension.getExtension().getName()).append(':');
+        for (final Alias alias : extension.getAliases())
+        {
+          final String key =
+              String.format("%1$-" + maxAliasNameLength + "s", alias.getName());
+          appendAlias(script, alias, key);
+          helpAlias.append(' ').append(alias.getName());
+        }
+
+        final String comment = extension.getExtension().getComment();
+        if (StringUtils.isNotBlank(comment))
+        {
+          helpAlias.append(" -- ").append(comment);
+        }
+        helpAlias.append(getCommandDelim()).append(' ');
+      }
+    }
+  }
+
+  private List<ExtensionGroup> filter(final List<ExtensionGroup> extensionGroups)
+  {
+    final List<ExtensionGroup> filteredGroups =
+        new ArrayList<ExtensionGroup>(extensionGroups.size());
+
+    final String scriptEnv = getId();
+    for (final ExtensionGroup group : extensionGroups)
+    {
+      final String env = group.getExtension().getEnv();
+      if (env == null || ObjectUtils.equals(scriptEnv, env))
+      {
+        filteredGroups.add(group);
+      }
+    }
+    return filteredGroups;
+  }
+
+  /**
+   * Returns the command delimiter.
+   *
+   * @return the command delimiter.
+   */
+  protected abstract Object getCommandDelim();
+
+  /**
+   * Appends the given alias to the script.
+   *
+   * @param script the script to append to.
+   * @param alias the alias to append.
+   * @param key the formatted key to the alias.
+   */
+  protected abstract void appendAlias(StringBuilder script, Alias alias,
+      String key);
 
   // --- object basics --------------------------------------------------------
 

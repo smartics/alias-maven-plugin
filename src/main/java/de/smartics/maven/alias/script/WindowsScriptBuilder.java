@@ -102,6 +102,12 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
 
   // --- get&set --------------------------------------------------------------
 
+  @Override
+  protected Object getCommandDelim()
+  {
+    return COMMAND_DELIM;
+  }
+
   // --- business -------------------------------------------------------------
 
   /**
@@ -136,6 +142,8 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
         }
       }
     }
+
+    appendExtensions(helpAlias, script);
 
     if (!aliasGroups.isEmpty())
     {
@@ -186,15 +194,22 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     return helpAlias;
   }
 
-  private void appendAlias(final StringBuilder script, final Alias alias,
+  /**
+   * {@inheritDoc}
+   */
+  protected void appendAlias(final StringBuilder script, final Alias alias,
       final String key)
   {
-    script.append("doskey ").append(key).append(" = ")
-        .append(alias.getCommand());
+    script.append("doskey ").append(key).append(" = ");
+    final String command = alias.getCommand().replace("{@args}", "$*");
+    script.append(command);
+
     if (alias.isPassArgs())
     {
       script.append(" $*");
     }
+
+
     script.append(NEWLINE);
   }
 

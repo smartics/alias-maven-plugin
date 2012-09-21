@@ -16,6 +16,8 @@
 package de.smartics.maven.alias.domain;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.jdom2.Attribute;
@@ -38,10 +40,13 @@ public final class AliasesProcessor
   // --- constants ------------------------------------------------------------
 
   /**
-   * The alias namespace.
+   * The prefix of supported namespaces.
+   * <p>
+   * The value of this constant is {@value}.
+   * </p>
    */
-  private static final Namespace NS_ALIAS = Namespace
-      .getNamespace("http://smartics.de/alias/1.0.0");
+  private static final String SUPPORTED_NAMESPACE_PREFIX =
+      "http://smartics.de/alias/1.";
 
   /**
    * The variable that can be used in commands for a bell (^G or unicode 0007).
@@ -60,6 +65,17 @@ public final class AliasesProcessor
    * The validated and parsed document.
    */
   private final Document doc;
+
+  /**
+   * The alias namespace.
+   */
+  private final Namespace nsAlias;
+
+  /**
+   * The collection of extension and their extended aliases.
+   */
+  private final List<ExtensionGroup> extensionGroups =
+      new ArrayList<ExtensionGroup>();
 
   // ****************************** Initializer *******************************
 
@@ -83,6 +99,15 @@ public final class AliasesProcessor
 
     final SAXBuilder sax = new SAXBuilder();// XMLReaders.XSDVALIDATING);
     this.doc = sax.build(source);
+    this.nsAlias = doc.getRootElement().getNamespace();
+    final String uri = nsAlias.getURI();
+    if (!uri.startsWith(SUPPORTED_NAMESPACE_PREFIX))
+    {
+      throw new JDOMException(
+          "The namespace '" + nsAlias
+              + "' is not supported. Namespace is required to start with '"
+              + SUPPORTED_NAMESPACE_PREFIX + "'.");
+    }
   }
 
   // ****************************** Inner Classes *****************************
@@ -105,15 +130,27 @@ public final class AliasesProcessor
   {
     final Element root = doc.getRootElement();
 
-    for (final Element groupElement : root.getChildren("group", NS_ALIAS))
+    for (final Element extensionElement : root
+        .getChildren("extension", nsAlias))
     {
-      final Attribute groupName = groupElement.getAttribute("name");
+      final AliasExtension extension = createExtension(extensionElement);
+      final ExtensionGroup extensionGroup = new ExtensionGroup(extension);
+      extensionGroups.add(extensionGroup);
+    }
+
+    for (final Element groupElement : root.getChildren("group", nsAlias)) // NOPMD
+    {
+      final Attribute groupName = groupElement.getAttribute("name"); // NOPMD
       final String comment = readComment(groupElement);
       final AliasGroup group = new AliasGroup(groupName.getValue(), comment);
-      for (final Element aliasElement : groupElement.getChildren("alias",
-          NS_ALIAS))
+      for (final Element aliasElement : groupElement.getChildren("alias", // NOPMD
+          nsAlias))
       {
         final Alias alias = createAlias(aliasElement);
+        for (final ExtensionGroup extensionGroup : extensionGroups)
+        {
+          extensionGroup.addAlias(group.getName(), alias);
+        }
         group.addAlias(alias);
       }
 
@@ -122,17 +159,66 @@ public final class AliasesProcessor
         builder.addAliases(group);
       }
     }
+
+    for (final AliasCollector builder : builders)
+    {
+      builder.setExtensionGroups(extensionGroups);
+    }
+  }
+
+  private AliasExtension createExtension(final Element extensionElement)
+  {
+    final AliasExtension.Builder builder = new AliasExtension.Builder();
+
+    final Attribute env = extensionElement.getAttribute("env");
+    if (env != null)
+    {
+      builder.withEnv(env.getValue());
+    }
+
+    final String name = extensionElement.getChildTextNormalize("name", nsAlias);
+    final String template =
+        extensionElement.getChildTextNormalize("template", nsAlias);
+    final String comment = readComment(extensionElement);
+
+    builder.withName(name).withTemplate(template).withComment(comment);
+
+    appendApplyTos(extensionElement, builder);
+
+    return builder.build();
+  }
+
+  private void appendApplyTos(final Element extensionElement,
+      final AliasExtension.Builder builder)
+  {
+    final Element applyToElement =
+        extensionElement.getChild("apply-to", nsAlias);
+    if (applyToElement != null)
+    {
+      for (final Element groupElement : applyToElement.getChildren("group",
+          nsAlias))
+      {
+        final String group = groupElement.getTextNormalize();
+        builder.addGroup(group);
+      }
+
+      for (final Element aliasElement : applyToElement.getChildren("alias",
+          nsAlias))
+      {
+        final String alias = aliasElement.getTextNormalize();
+        builder.addAlias(alias);
+      }
+    }
   }
 
   private Alias createAlias(final Element aliasElement)
   {
     final Alias.Builder builder = new Alias.Builder();
     final Attribute env = aliasElement.getAttribute("env");
-    final Element command = aliasElement.getChild("command", NS_ALIAS);
+    final Element command = aliasElement.getChild("command", nsAlias);
     final String normalizedCommandText =
         replaceBellVariable(command.getTextNormalize());
-
-    builder.withName(aliasElement.getChildTextNormalize("name", NS_ALIAS))
+    builder.withName(aliasElement.getChildTextNormalize("name", nsAlias))
         .withCommand(normalizedCommandText);
 
     final String comment = readComment(aliasElement);
@@ -156,9 +242,9 @@ public final class AliasesProcessor
     return textNormalize.replace(BELL_VARIABLE, BELL_VALUE);
   }
 
-  private static String readComment(final Element root)
+  private String readComment(final Element root)
   {
-    final Element commentElement = root.getChild("comment", NS_ALIAS);
+    final Element commentElement = root.getChild("comment", nsAlias);
     if (commentElement != null)
     {
       final XMLOutputter xout = new XMLOutputter();
