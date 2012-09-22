@@ -366,13 +366,13 @@ public final class AliasExtension
           template.replace(PLACEHOLDER,
               originalCommand + (alias.isPassArgs() ? " {@args}" : ""));
 
-      final String originalComment = alias.getComment();
-      final String extensionComment =
-          (originalComment != null ? (comment != null ? originalComment + ' '
-                                                        + comment
-              : originalComment) : null);
+      // final String originalComment = alias.getComment();
+      // final String extensionComment =
+      // (originalComment != null ? (comment != null ? originalComment + ' '
+      // + comment
+      // : originalComment) : null);
       builder.withName(extensionName).withCommand(extensionCommand)
-          .withComment(extensionComment).withPassArgs(false).withEnv(env);
+          .withComment(alias.getComment()).withPassArgs(false).withEnv(env);
 
       final Alias extensionAlias = builder.build();
       return extensionAlias;
