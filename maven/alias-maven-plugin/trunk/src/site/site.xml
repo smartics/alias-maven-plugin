@@ -61,8 +61,8 @@
       <item name="Tips"                href="tips.html"/>
       <item name="Example"             href="example.html"/>
       <item name="alias XSD"           href="alias-doc.html"/>
-      <item name="Accessing Artifacts" href="https://project.smartics.de/projects/projectdoc/references/topic/systems/0010-artifact-server.html"/>
-      <item name="All Versions"        href="https://project.smartics.de/public/${project.groupId}/${project.artifactId}/"/>
+      <item name="Accessing Artifacts" href="http://www.smartics.de/projects/accessing-artifacts"/>
+      <item name="All Versions"        href="${webroot}/${project.groupId}/${project.artifactId}/"/>
     </menu>
 
     <menu name="Release Information">
