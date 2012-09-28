@@ -241,7 +241,9 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
         final String comment = extension.getExtension().getComment();
         if (StringUtils.isNotBlank(comment))
         {
-          helpAlias.append(" -- ").append(comment);
+          final String normComment =
+              comment.replace('\n', ' ').replace('\r', ' ');
+          helpAlias.append(" -- ").append(normComment);
         }
         helpAlias.append(getCommandDelim()).append(' ');
       }
