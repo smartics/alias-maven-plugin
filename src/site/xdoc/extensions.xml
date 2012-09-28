@@ -34,13 +34,26 @@
       <source><![CDATA[<aliases
   xmlns="http://smartics.de/alias/1.1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
   <extension env="windows">
     <name>aq</name>
-    <template>PENDING {@cmd} PENDING</template>
-    <comment>and-quit: Launches the command and closes the shell on successful termination. On error the shell is turned red and beeps for attention.</comment>
+    <template>@echo off $T color $T {@cmd} $* ^&amp;^&amp; exit $T color F4 $T @echo on $T echo ${bell}</template>
+    <comment>and-quit: Launches the command and closes the shell on successful termination.
+      On error the shell is turned red and beeps for attention.</comment>
     <apply-to>
       <group>mvn</group>
-      <alias>b</alias>
+      <group>project-release</group>
+    </apply-to>
+  </extension>
+
+  <extension env="bash">
+    <name>aq</name>
+    <template>{@cmd} ; exit</template>
+    <comment>and-quit: Launches the command and closes the shell on successful termination.
+      On error the shell is turned red and beeps for attention.</comment>
+    <apply-to>
+      <group>mvn</group>
+      <group>project-release</group>
     </apply-to>
   </extension>
 
