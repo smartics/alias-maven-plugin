@@ -16,9 +16,7 @@
     limitations under the License.
 
 -->
-<project name="${project.name}">
-  <publishDate position="bottom" format="dd. MMMM yyyy"/>
-
+<project name="${project.artifactId}">
   <!--
     The icon for the project is designed by
               Mattahan (Paul Davey, http://mattahan.deviantart.com)
