@@ -44,6 +44,12 @@
       <link rel="SHORTCUT ICON" href="${project.url}/images/logos/favicon.ico"/>
     </head>
 
+    <breadcrumbs>
+      <item name="smartics" href="http://www.smartics.de/"/>
+      <item name="projects" href="${webroot-projects}/index.html"/>
+      <item name="${project.artifactId}" href="${project.url}/index.html"/>
+    </breadcrumbs>
+
     <menu name="Overview">
       <item name="Home"                href="index.html"/>
       <item name="Goals"               href="plugin-info.html"/>
@@ -77,7 +83,7 @@
         <item name="Dependencies"       href="dependencies.html"/>
         <item name="Plugins"            href="plugin-management.html"/>
       </item>
-	  <item name="Information Systems"  href="project-info.html" collapse="true">
+    <item name="Information Systems"  href="project-info.html" collapse="true">
         <item name="Source Repository" href="source-repository.html"/>
         <item name="Issue Management"  href="issue-tracking.html"/>
         <item name="CI Server"         href="integration.html"/>
