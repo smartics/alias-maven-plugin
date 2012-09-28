@@ -185,11 +185,14 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
       final String key)
   {
     // Bash always accepts appended arguments. So there is no check for pass.
-    script.append("alias ").append(alias.getName()).append("='");
-
-    // FIXME: Howto insert the command line args within the command?
-    final String command = alias.getCommand().replace("{@args}", "");
-    script.append(command).append('\'').append(NEWLINE);
+    script.append("function ").append(alias.getName()).append("() { ");
+    final String command = alias.getCommand().replace("{@args}", "$@");
+    script.append(command);
+    if (alias.isPassArgs())
+    {
+      script.append(" $@");
+    }
+    script.append("; }").append(NEWLINE);
   }
 
   private void appendHelp(final StringBuilder helpAlias, final Alias alias,
