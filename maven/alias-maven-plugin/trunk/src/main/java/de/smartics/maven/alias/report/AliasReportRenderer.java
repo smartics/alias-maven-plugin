@@ -258,6 +258,17 @@ public final class AliasReportRenderer
       }
       sink.sectionTitle2_();
 
+      final String mnemonic = extension.getMnemonic();
+      if (mnemonic != null)
+      {
+        sink.paragraph();
+        sink.italic();
+        sink.rawText(mnemonic);
+        sink.italic_();
+        sink.paragraph_();
+      }
+
+
       final String comment = extension.getComment();
       if (comment != null)
       {
