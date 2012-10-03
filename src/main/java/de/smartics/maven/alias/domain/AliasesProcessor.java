@@ -181,6 +181,14 @@ public final class AliasesProcessor
         extensionElement.getChildTextNormalize("template", nsAlias);
     final String comment = readComment(extensionElement);
 
+    final Element commentElement =
+        extensionElement.getChild("comment", nsAlias);
+    if (commentElement != null)
+    {
+      final String mnemonic = commentElement.getAttributeValue("mnemonic");
+      builder.withMnemonic(mnemonic);
+    }
+
     builder.withName(name).withTemplate(template).withComment(comment);
 
     appendApplyTos(extensionElement, builder);

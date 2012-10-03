@@ -229,7 +229,14 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
       for (final ExtensionGroup extension : filteredGroups)
       {
         helpAlias.append("echo  ...")
-            .append(extension.getExtension().getName()).append(':');
+            .append(extension.getExtension().getName());
+
+        final String mnemonic = extension.getExtension().getMnemonic();
+        if (StringUtils.isNotBlank(mnemonic))
+        {
+          helpAlias.append(" (").append(mnemonic).append("):");
+        }
+
         for (final Alias alias : extension.getAliases())
         {
           final String key =
@@ -238,17 +245,16 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
           helpAlias.append(' ').append(alias.getName());
         }
 
-        final String comment = extension.getExtension().getComment();
-        if (StringUtils.isNotBlank(comment))
-        {
-          final String normComment =
-              comment.replace('\n', ' ').replace('\r', ' ');
-          helpAlias.append(" -- ").append(normComment);
-        }
         helpAlias.append(getCommandDelim()).append(' ');
       }
     }
   }
+
+  // private static String normalizeComment(final String comment)
+  // {
+  // final String normComment = comment.trim().replaceAll("\\s+", " ");
+  // return normComment;
+  // }
 
   private List<ExtensionGroup> filter(final List<ExtensionGroup> extensionGroups)
   {

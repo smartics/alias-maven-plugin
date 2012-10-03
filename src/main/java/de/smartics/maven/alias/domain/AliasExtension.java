@@ -60,6 +60,12 @@ public final class AliasExtension
   private final List<String> applyToAliases;
 
   /**
+   * A short sequence of characters that help to understand what the extension
+   * name means.
+   */
+  private final String mnemonic;
+
+  /**
    * The optional commend to be appended to the comment of the extended alias.
    */
   private final String comment;
@@ -79,6 +85,7 @@ public final class AliasExtension
     this.template = builder.template;
     this.applyToGroups = new ArrayList<String>(builder.applyToGroups);
     this.applyToAliases = new ArrayList<String>(builder.applyToAliases);
+    this.mnemonic = builder.mnemonic;
     this.comment = builder.comment;
     this.env = builder.env;
   }
@@ -116,6 +123,12 @@ public final class AliasExtension
      * The list of single aliases the extension is applied too.
      */
     private final List<String> applyToAliases = new ArrayList<String>();
+
+    /**
+     * A short sequence of characters that help to understand what the extension
+     * name means.
+     */
+    private String mnemonic;
 
     /**
      * The optional commend to be appended to the comment of the extended alias.
@@ -161,6 +174,20 @@ public final class AliasExtension
     public Builder withTemplate(final String template)
     {
       this.template = template;
+      return this;
+    }
+
+    /**
+     * Sets a short sequence of characters that help to understand what the
+     * extension name means.
+     *
+     * @param mnemonic a short sequence of characters that help to understand
+     *          what the extension name means.
+     * @return a reference to this builder instance.
+     */
+    public Builder withMnemonic(final String mnemonic)
+    {
+      this.mnemonic = mnemonic;
       return this;
     }
 
@@ -293,6 +320,18 @@ public final class AliasExtension
   public List<String> getApplyToAliases()
   {
     return applyToAliases;
+  }
+
+  /**
+   * Returns a short sequence of characters that help to understand what the
+   * extension name means.
+   *
+   * @return a short sequence of characters that help to understand what the
+   *         extension name means.
+   */
+  public String getMnemonic()
+  {
+    return mnemonic;
   }
 
   /**

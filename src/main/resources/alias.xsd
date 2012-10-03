@@ -105,6 +105,20 @@
               namespace="##any"
               processContents="lax"></xs:any>
           </xs:sequence>
+          <xs:attribute
+            name="mnemonic"
+            type="xs:string"
+            use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                 A short sequence of characters that help to understand what
+                 the extension name means.
+
+                 For instance if the name is 'aq' the mnemonic may read
+                 '... and quit'.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
       <xs:element
