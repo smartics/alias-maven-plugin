@@ -25,7 +25,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
-import de.smartics.maven.alias.domain.AliasesProcessor;
 
 /**
  * Creates an alias script for Windows.
@@ -78,8 +77,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     HELP_ALIAS_COMMAND_REPLACEMENTS.put("$T", ":");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put(">", "to");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put("&", ";");
-    HELP_ALIAS_COMMAND_REPLACEMENTS.put(AliasesProcessor.BELL_VALUE,
-        AliasesProcessor.BELL_VARIABLE);
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put(BELL_VALUE, BELL_VARIABLE);
   }
 
   // ****************************** Constructors ******************************
@@ -201,14 +199,15 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
       final String key)
   {
     script.append("doskey ").append(key).append(" = ");
-    final String command = alias.getCommand().replace("{@args}", "$*");
+    final String command =
+        alias.getCommand().replace("{@args}", "$*")
+            .replace(BELL_VARIABLE, BELL_VALUE);
     script.append(command);
 
     if (alias.isPassArgs())
     {
       script.append(" $*");
     }
-
 
     script.append(NEWLINE);
   }

@@ -186,7 +186,9 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
   {
     // Bash always accepts appended arguments. So there is no check for pass.
     script.append("function ").append(alias.getName()).append("() { ");
-    final String command = alias.getCommand().replace("{@args}", "$@");
+    final String command =
+        alias.getCommand().replace("{@args}", "$@")
+            .replace(BELL_VARIABLE, BELL_VALUE);
     script.append(command);
     if (alias.isPassArgs())
     {

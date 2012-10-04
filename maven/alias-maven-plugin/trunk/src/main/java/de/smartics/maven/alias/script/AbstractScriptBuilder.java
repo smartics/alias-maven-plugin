@@ -35,6 +35,23 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
 
   // --- constants ------------------------------------------------------------
 
+  /**
+   * The variable that can be used in commands for a bell (^G or unicode 0007).
+   * As XML 1.0 does not allow that character we use this marker.
+   * <p>
+   * The value of this constant is {@value}.
+   * </p>
+   */
+  protected static final String BELL_VARIABLE = "{@bell}";
+
+  /**
+   * The bell value to use.
+   * <p>
+   * The value of this constant is {@value}.
+   * </p>
+   */
+  protected static final String BELL_VALUE = "\u0007";
+
   // --- members --------------------------------------------------------------
 
   /**

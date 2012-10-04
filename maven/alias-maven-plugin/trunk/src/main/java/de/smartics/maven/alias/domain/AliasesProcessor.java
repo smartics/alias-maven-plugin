@@ -48,17 +48,6 @@ public final class AliasesProcessor
   private static final String SUPPORTED_NAMESPACE_PREFIX =
       "http://smartics.de/alias/1.";
 
-  /**
-   * The variable that can be used in commands for a bell (^G or unicode 0007).
-   * As XML 1.0 does not allow that character we use this marker.
-   */
-  public static final String BELL_VARIABLE = "${bell}";
-
-  /**
-   * The bell value to use.
-   */
-  public static final String BELL_VALUE = "\u0007";
-
   // --- members ---------------------------------------------------------------
 
   /**
@@ -224,8 +213,7 @@ public final class AliasesProcessor
     final Alias.Builder builder = new Alias.Builder();
     final Attribute env = aliasElement.getAttribute("env");
     final Element command = aliasElement.getChild("command", nsAlias);
-    final String normalizedCommandText =
-        replaceBellVariable(command.getTextNormalize());
+    final String normalizedCommandText = command.getTextNormalize();
     builder.withName(aliasElement.getChildTextNormalize("name", nsAlias))
         .withCommand(normalizedCommandText);
 
@@ -243,11 +231,6 @@ public final class AliasesProcessor
     }
 
     return builder.build();
-  }
-
-  private String replaceBellVariable(final String textNormalize)
-  {
-    return textNormalize.replace(BELL_VARIABLE, BELL_VALUE);
   }
 
   private String readComment(final Element root)
