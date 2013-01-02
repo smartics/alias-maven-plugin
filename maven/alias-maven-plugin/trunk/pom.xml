@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.smartics.config.pom</groupId>
     <artifactId>pom-java</artifactId>
-    <version>31.2.6</version>
+    <version>31.2.9</version>
     <relativePath />
   </parent>
 
@@ -27,7 +27,7 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
       <comments>
-        Copyright 2012 smartics, Kronseder &amp; Reiner GmbH
+        Copyright 2012-2013 smartics, Kronseder &amp; Reiner GmbH
       </comments>
     </license>
   </licenses>

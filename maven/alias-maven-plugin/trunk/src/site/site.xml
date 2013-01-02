@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2012 smartics, Kronseder & Reiner GmbH
+    Copyright 2012-2013 smartics, Kronseder & Reiner GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -45,14 +45,14 @@
     </head>
 
     <breadcrumbs>
-      <item name="smartics" href="http://www.smartics.de/"/>
-      <item name="projects" href="${webroot-projects}/index.html"/>
+      <item name="home" href="http://www.smartics.de/"/>
+      <item name="projects" href="${webroot-projects}"/>
       <item name="${project.artifactId}" href="${project.url}/index.html"/>
     </breadcrumbs>
 
     <menu name="Overview">
-      <item name="Home"                href="index.html"/>
-      <item name="Goals"               href="plugin-info.html"/>
+      <item name="Introduction"          href="index.html"/>
+      <item name="Goals"                 href="plugin-info.html"/>
       <item name="Usage" href="" collapse="false">
         <item name="Basic"               href="usage.html"/>
         <item name="Extensions"          href="extensions.html"/>
