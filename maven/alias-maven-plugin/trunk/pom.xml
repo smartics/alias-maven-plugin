@@ -12,7 +12,7 @@
 
   <groupId>de.smartics.maven.plugin</groupId>
   <artifactId>alias-maven-plugin</artifactId>
-  <version>0.3.3-SNAPSHOT</version>
+  <version>0.3.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>alias-maven-plugin</name>
   <description>
