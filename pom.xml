@@ -161,15 +161,15 @@
             </plugin>
             <plugin>
               <groupId>de.smartics.maven.plugin</groupId>
-              <artifactId>maven-issues-plugin</artifactId>
+              <artifactId>issues-maven-plugin</artifactId>
             </plugin>
             <plugin>
               <groupId>de.smartics.maven.plugin</groupId>
-              <artifactId>maven-issues-plugin</artifactId>
+              <artifactId>issues-maven-plugin</artifactId>
             </plugin>
             <plugin>
               <groupId>de.smartics.maven.plugin</groupId>
-              <artifactId>maven-buildmetadata-plugin</artifactId>
+              <artifactId>buildmetadata-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -196,7 +196,7 @@
 
             <plugin>
               <groupId>de.smartics.maven.plugin</groupId>
-              <artifactId>maven-apidoc-plugin</artifactId>
+              <artifactId>apidoc-maven-plugin</artifactId>
               <configuration>
                 <skip>true</skip>
               </configuration>
