@@ -61,6 +61,7 @@
       <item name="Tips"                href="tips.html"/>
       <item name="Example"             href="example.html"/>
       <item name="alias XSD"           href="alias-doc.html"/>
+      <item name="Project Blog"        href="${webroot-projects}/productivity-a-ware/${project.artifactId}"/>
       <item name="Accessing Artifacts" href="http://www.smartics.de/projects/accessing-artifacts"/>
       <item name="All Versions"        href="${webroot}/${project.groupId}/${project.artifactId}/"/>
     </menu>
