@@ -78,6 +78,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     HELP_ALIAS_COMMAND_REPLACEMENTS.put(">", "to");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put("&", ";");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put(BELL_VALUE, BELL_VARIABLE);
+    HELP_ALIAS_COMMAND_REPLACEMENTS.put("%", "");
   }
 
   // ****************************** Constructors ******************************
