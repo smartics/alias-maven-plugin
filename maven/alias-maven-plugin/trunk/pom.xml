@@ -61,7 +61,7 @@
     <issues-component />
 
     <donationId>ZNFSBTAQJ49HA</donationId>
-    <!-- <ohlohProjectId>488417</ohlohProjectId>  -->
+    <ohlohProjectId>710972</ohlohProjectId>
     <twitterId>smartics</twitterId>
 
     <maven-scm.version>1.3</maven-scm.version>
