@@ -1,32 +1,31 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.domain;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Provides information about an extension of a number of aliases. An extension
  * extends an existing alias and adds it to the set of aliases in addition to
  * the original alias.
  */
-public final class AliasExtension
-{
+public final class AliasExtension {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -79,8 +78,7 @@ public final class AliasExtension
 
   // ****************************** Constructors ******************************
 
-  private AliasExtension(final Builder builder)
-  {
+  private AliasExtension(final Builder builder) {
     this.name = builder.name;
     this.template = builder.template;
     this.applyToGroups = new ArrayList<String>(builder.applyToGroups);
@@ -95,8 +93,7 @@ public final class AliasExtension
   /**
    * The builder for {@link AliasExtension} instances.
    */
-  public static final class Builder
-  {
+  public static final class Builder {
     // ******************************** Fields ********************************
 
     // --- constants ----------------------------------------------------------
@@ -159,8 +156,7 @@ public final class AliasExtension
      * @param name the name of the extension.
      * @return a reference to this builder instance.
      */
-    public Builder withName(final String name)
-    {
+    public Builder withName(final String name) {
       this.name = name;
       return this;
     }
@@ -171,8 +167,7 @@ public final class AliasExtension
      * @param template the template to apply to the selected aliases' commands.
      * @return a reference to this builder instance.
      */
-    public Builder withTemplate(final String template)
-    {
+    public Builder withTemplate(final String template) {
       this.template = template;
       return this;
     }
@@ -182,11 +177,10 @@ public final class AliasExtension
      * extension name means.
      *
      * @param mnemonic a short sequence of characters that help to understand
-     *          what the extension name means.
+     *        what the extension name means.
      * @return a reference to this builder instance.
      */
-    public Builder withMnemonic(final String mnemonic)
-    {
+    public Builder withMnemonic(final String mnemonic) {
       this.mnemonic = mnemonic;
       return this;
     }
@@ -196,11 +190,10 @@ public final class AliasExtension
      * alias.
      *
      * @param comment the optional commend to be appended to the comment of the
-     *          extended alias.
+     *        extended alias.
      * @return a reference to this builder instance.
      */
-    public Builder withComment(final String comment)
-    {
+    public Builder withComment(final String comment) {
       this.comment = comment;
       return this;
     }
@@ -211,8 +204,7 @@ public final class AliasExtension
      * @param env the environment the extension is applied to.
      * @return a reference to this builder instance.
      */
-    public Builder withEnv(final String env)
-    {
+    public Builder withEnv(final String env) {
       this.env = env;
       return this;
     }
@@ -225,8 +217,7 @@ public final class AliasExtension
      * @param group the name of the group to be added.
      * @return a reference to this builder instance.
      */
-    public Builder addGroup(final String group)
-    {
+    public Builder addGroup(final String group) {
       applyToGroups.add(group);
       return this;
     }
@@ -237,8 +228,7 @@ public final class AliasExtension
      * @param alias the name of the alias to be added.
      * @return a reference to this builder instance.
      */
-    public Builder addAlias(final String alias)
-    {
+    public Builder addAlias(final String alias) {
       applyToAliases.add(alias);
       return this;
     }
@@ -248,22 +238,18 @@ public final class AliasExtension
      *
      * @return the created instance.
      * @throws IllegalArgumentException if {@link #withName(String) name} or
-     *           {@link #withTemplate(String) template} is blank (or both).
+     *         {@link #withTemplate(String) template} is blank (or both).
      */
-    public AliasExtension build() throws IllegalArgumentException
-    {
+    public AliasExtension build() throws IllegalArgumentException {
       final boolean templateIsBlank = StringUtils.isBlank(template);
-      if (StringUtils.isBlank(name))
-      {
-        final String message =
-            "Name is missing for extension"
-                + (templateIsBlank ? " with template '" + template + '\'' : "")
-                + '.';
+      if (StringUtils.isBlank(name)) {
+        final String message = "Name is missing for extension"
+            + (templateIsBlank ? " with template '" + template + '\'' : "")
+            + '.';
         throw new IllegalArgumentException(message);
       }
 
-      if (templateIsBlank)
-      {
+      if (templateIsBlank) {
         final String message =
             "Template is missing for extension '" + name + "'.";
         throw new IllegalArgumentException(message);
@@ -287,8 +273,7 @@ public final class AliasExtension
    *
    * @return the name of the extension.
    */
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 
@@ -297,8 +282,7 @@ public final class AliasExtension
    *
    * @return the template to apply to the selected aliases' commands.
    */
-  public String getTemplate()
-  {
+  public String getTemplate() {
     return template;
   }
 
@@ -307,8 +291,7 @@ public final class AliasExtension
    *
    * @return the list of groups the extension is applied too.
    */
-  public List<String> getApplyToGroups()
-  {
+  public List<String> getApplyToGroups() {
     return applyToGroups;
   }
 
@@ -317,8 +300,7 @@ public final class AliasExtension
    *
    * @return the list of single aliases the extension is applied too.
    */
-  public List<String> getApplyToAliases()
-  {
+  public List<String> getApplyToAliases() {
     return applyToAliases;
   }
 
@@ -329,8 +311,7 @@ public final class AliasExtension
    * @return a short sequence of characters that help to understand what the
    *         extension name means.
    */
-  public String getMnemonic()
-  {
+  public String getMnemonic() {
     return mnemonic;
   }
 
@@ -341,8 +322,7 @@ public final class AliasExtension
    * @return the optional commend to be appended to the comment of the extended
    *         alias.
    */
-  public String getComment()
-  {
+  public String getComment() {
     return comment;
   }
 
@@ -351,8 +331,7 @@ public final class AliasExtension
    *
    * @return the environment the extension is applied to.
    */
-  public String getEnv()
-  {
+  public String getEnv() {
     return env;
   }
 
@@ -362,48 +341,43 @@ public final class AliasExtension
    * Checks whether the extension is applicable to the alias or not.
    *
    * @param group the name of the group the alias belongs to (may be
-   *          <code>null</code>).
+   *        <code>null</code>).
    * @param alias the alias to check for applicability.
    * @return <code>true</code> if the alias is to be extended,
    *         <code>false</code> otherwise.
    * @throws NullPointerException if {@code alias} is <code>null</code>.
    */
   public boolean isApplicable(final String group, final Alias alias)
-    throws NullPointerException
-  {
-    if (alias == null)
-    {
+      throws NullPointerException {
+    if (alias == null) {
       throw new NullPointerException("Alias must not be 'null'");
     }
 
     return (group != null && applyToGroups.contains(group))
-           || applyToAliases.contains(alias.getName());
+        || applyToAliases.contains(alias.getName());
   }
 
   /**
    * Applies the extension to the alias if applicable.
    *
    * @param group the name of the group the alias belongs to (may be
-   *          <code>null</code>).
+   *        <code>null</code>).
    * @param alias the alias to apply the extension to.
    * @return the extended alias or <code>null</code> if not applicable.
    * @throws NullPointerException if {@code alias} is <code>null</code>.
    * @see #isApplicable(String, Alias)
    */
   public Alias apply(final String group, final Alias alias)
-    throws NullPointerException
-  {
-    if (isApplicable(group, alias))
-    {
+      throws NullPointerException {
+    if (isApplicable(group, alias)) {
       final Alias.Builder builder = new Alias.Builder(alias);
 
       final String originalName = alias.getName();
       final String extensionName = originalName + name;
 
       final String originalCommand = alias.getCommand();
-      final String extensionCommand =
-          template.replace(PLACEHOLDER,
-              originalCommand + (alias.isPassArgs() ? " {@args}" : ""));
+      final String extensionCommand = template.replace(PLACEHOLDER,
+          originalCommand + (alias.isPassArgs() ? " {@args}" : ""));
 
       // final String originalComment = alias.getComment();
       // final String extensionComment =

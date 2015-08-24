@@ -1,17 +1,17 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.domain;
 
@@ -20,8 +20,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * Provides alias information.
  */
-public final class Alias
-{
+public final class Alias {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -61,8 +60,7 @@ public final class Alias
   /**
    * Default constructor.
    */
-  private Alias(final Builder builder)
-  {
+  private Alias(final Builder builder) {
     this.name = builder.name;
     this.command = builder.command;
     this.comment = builder.comment;
@@ -76,8 +74,7 @@ public final class Alias
   /**
    * The builder for {@link Alias} instances.
    */
-  public static final class Builder
-  {
+  public static final class Builder {
     // ******************************** Fields ********************************
 
     // --- constants ----------------------------------------------------------
@@ -116,23 +113,17 @@ public final class Alias
 
     /**
      * Default constructor.
-     *
-     * @param alias
      */
-    public Builder()
-    {
-    }
+    public Builder() {}
 
     /**
      * Copy constructor.
      *
      * @param alias the alias to initialize with.
      */
-    public Builder(final Alias alias)
-    {
-      withName(alias.name).withCommand(alias.command)
-          .withComment(alias.comment).withEnv(alias.env)
-          .withPassArgs(alias.passArgs);
+    public Builder(final Alias alias) {
+      withName(alias.name).withCommand(alias.command).withComment(alias.comment)
+          .withEnv(alias.env).withPassArgs(alias.passArgs);
     }
 
     // ***************************** Inner Classes ****************************
@@ -149,8 +140,7 @@ public final class Alias
      * @param name the short name of the alias.
      * @return a reference to the builder.
      */
-    public Builder withName(final String name)
-    {
+    public Builder withName(final String name) {
       this.name = name;
       return this;
     }
@@ -161,8 +151,7 @@ public final class Alias
      * @param command the command that is bound to the short name.
      * @return a reference to the builder.
      */
-    public Builder withCommand(final String command)
-    {
+    public Builder withCommand(final String command) {
       this.command = command;
       return this;
     }
@@ -172,12 +161,10 @@ public final class Alias
      * information about the alias and the context of its usage.
      *
      * @param comment the optional comment to be used for reports that provides
-     *          detailed information about the alias and the context of its
-     *          usage.
+     *        detailed information about the alias and the context of its usage.
      * @return a reference to the builder.
      */
-    public Builder withComment(final String comment)
-    {
+    public Builder withComment(final String comment) {
       this.comment = comment;
       return this;
     }
@@ -188,8 +175,7 @@ public final class Alias
      * @param env the environment the alias is applied to.
      * @return a reference to the builder.
      */
-    public Builder withEnv(final String env)
-    {
+    public Builder withEnv(final String env) {
       this.env = env;
       return this;
     }
@@ -198,11 +184,10 @@ public final class Alias
      * Sets the flag that allows arguments to be appended to the command.
      *
      * @param passArgs the flag that allows arguments to be appended to the
-     *          command.
+     *        command.
      * @return a reference to the builder.
      */
-    public Builder withPassArgs(final boolean passArgs)
-    {
+    public Builder withPassArgs(final boolean passArgs) {
       this.passArgs = passArgs;
       return this;
     }
@@ -214,27 +199,20 @@ public final class Alias
      *
      * @return the requested instance build by this builders properties.
      * @throws IllegalArgumentException if {@link #withName(String) name} or
-     *           {@link #withCommand(String) command} is blank (or both).
+     *         {@link #withCommand(String) command} is blank (or both).
      */
-    public Alias build() throws IllegalArgumentException
-    {
+    public Alias build() throws IllegalArgumentException {
       final boolean nameIsBlank = StringUtils.isBlank(name);
       final boolean commandIsBlank = StringUtils.isBlank(command);
-      if (nameIsBlank && commandIsBlank)
-      {
+      if (nameIsBlank && commandIsBlank) {
         final String message =
             "Alias name and command is required, but missing.";
         throw new IllegalArgumentException(message);
-      }
-      else if (nameIsBlank)
-      {
-        final String message =
-            "Alias name is required for command '" + command
-                + "', but missing.";
+      } else if (nameIsBlank) {
+        final String message = "Alias name is required for command '" + command
+            + "', but missing.";
         throw new IllegalArgumentException(message);
-      }
-      else if (commandIsBlank)
-      {
+      } else if (commandIsBlank) {
         final String message =
             "Alias command is required for name '" + name + "', but missing.";
         throw new IllegalArgumentException(message);
@@ -257,8 +235,7 @@ public final class Alias
    *
    * @return the short name of the alias.
    */
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 
@@ -267,8 +244,7 @@ public final class Alias
    *
    * @return the command that is bound to the short name.
    */
-  public String getCommand()
-  {
+  public String getCommand() {
     return command;
   }
 
@@ -279,8 +255,7 @@ public final class Alias
    * @return the optional comment to be used for reports that provides detailed
    *         information about the alias and the context of its usage.
    */
-  public String getComment()
-  {
+  public String getComment() {
     return comment;
   }
 
@@ -289,8 +264,7 @@ public final class Alias
    *
    * @return the environment the alias is applied to.
    */
-  public String getEnv()
-  {
+  public String getEnv() {
     return env;
   }
 
@@ -299,8 +273,7 @@ public final class Alias
    *
    * @return the flag that allows arguments to be appended to the command.
    */
-  public boolean isPassArgs()
-  {
+  public boolean isPassArgs() {
     return passArgs;
   }
 

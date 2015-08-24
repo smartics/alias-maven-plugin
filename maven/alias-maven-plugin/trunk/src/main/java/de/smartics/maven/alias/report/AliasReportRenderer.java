@@ -1,37 +1,36 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.report;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasExtension;
 import de.smartics.maven.alias.domain.AliasGroup;
 import de.smartics.maven.alias.domain.ExtensionGroup;
 
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.reporting.MavenReportException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
  * Renders the alias report.
  */
-public final class AliasReportRenderer
-{ // NOPMD
+public final class AliasReportRenderer {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -65,8 +64,7 @@ public final class AliasReportRenderer
    * @param collector the collection of alias groups to report.
    */
   public AliasReportRenderer(final ResourceBundle messages, final Sink sink,
-      final ReportAliasCollector collector)
-  {
+      final ReportAliasCollector collector) {
     this.sink = sink;
     this.messages = messages;
     this.collector = collector;
@@ -87,8 +85,7 @@ public final class AliasReportRenderer
    *
    * @throws MavenReportException if the report cannot be rendered.
    */
-  public void renderReport() throws MavenReportException
-  {
+  public void renderReport() throws MavenReportException {
     sink.head();
     sink.title();
     sink.text(messages.getString("report.name"));
@@ -107,8 +104,7 @@ public final class AliasReportRenderer
    *
    * @throws MavenReportException if the report cannot be rendered.
    */
-  private void renderBody() throws MavenReportException
-  {
+  private void renderBody() throws MavenReportException {
     sink.section1();
 
     sink.sectionTitle1();
@@ -130,26 +126,22 @@ public final class AliasReportRenderer
     sink.section1_();
   }
 
-  private void renderAliasGroups()
-  {
-    for (final AliasGroup group : collector)
-    {
+  private void renderAliasGroups() {
+    for (final AliasGroup group : collector) {
       final String sectionName = group.getName();
       sink.sectionTitle2();
       sink.text(sectionName);
       sink.sectionTitle2_();
 
       final String comment = group.getComment();
-      if (comment != null)
-      {
+      if (comment != null) {
         sink.paragraph();
         sink.rawText(comment);
         sink.paragraph_();
       }
 
       renderTableStart();
-      for (final Alias alias : group.getAliases())
-      {
+      for (final Alias alias : group.getAliases()) {
         renderTableRow(alias);
       }
 
@@ -157,8 +149,7 @@ public final class AliasReportRenderer
     }
   }
 
-  private void renderTableStart()
-  {
+  private void renderTableStart() {
     sink.table();
     sink.tableRow();
 
@@ -180,13 +171,11 @@ public final class AliasReportRenderer
     sink.tableRow_();
   }
 
-  private void renderTableEnd()
-  {
+  private void renderTableEnd() {
     sink.table_();
   }
 
-  private void renderTableRow(final Alias alias)
-  {
+  private void renderTableRow(final Alias alias) {
     sink.tableRow();
 
     sink.tableCell();
@@ -203,12 +192,9 @@ public final class AliasReportRenderer
 
     sink.tableCell();
     final String comment = alias.getComment();
-    if (comment != null)
-    {
+    if (comment != null) {
       sink.rawText(comment);
-    }
-    else
-    {
+    } else {
       sink.text("-");
     }
     sink.tableCell_();
@@ -217,14 +203,10 @@ public final class AliasReportRenderer
     sink.tableRow_();
   }
 
-  private String getLabel(final String key)
-  {
-    try
-    {
+  private String getLabel(final String key) {
+    try {
       return messages.getString(key);
-    }
-    catch (final MissingResourceException e)
-    {
+    } catch (final MissingResourceException e) {
       return key;
     }
   }
@@ -232,19 +214,15 @@ public final class AliasReportRenderer
   /**
    * Renders the footer text.
    */
-  private void renderFooter()
-  {
+  private void renderFooter() {
     final String footerText = messages.getString("report.footer");
-    if (StringUtils.isNotBlank(footerText))
-    {
+    if (StringUtils.isNotBlank(footerText)) {
       sink.rawText(footerText);
     }
   }
 
-  private void renderExtensions()
-  {
-    for (final ExtensionGroup group : collector.getExtensionGroups())
-    {
+  private void renderExtensions() {
+    for (final ExtensionGroup group : collector.getExtensionGroups()) {
       final AliasExtension extension = group.getExtension();
 
       final String sectionName = extension.getName();
@@ -252,15 +230,13 @@ public final class AliasReportRenderer
       sink.sectionTitle2();
       sink.text("..." + sectionName);
       final String env = extension.getEnv();
-      if (StringUtils.isNotBlank(env))
-      {
+      if (StringUtils.isNotBlank(env)) {
         sink.text(" (" + env + ')');
       }
       sink.sectionTitle2_();
 
       final String mnemonic = extension.getMnemonic();
-      if (mnemonic != null)
-      {
+      if (mnemonic != null) {
         sink.paragraph();
         sink.italic();
         sink.rawText(mnemonic);
@@ -268,18 +244,15 @@ public final class AliasReportRenderer
         sink.paragraph_();
       }
 
-
       final String comment = extension.getComment();
-      if (comment != null)
-      {
+      if (comment != null) {
         sink.paragraph();
         sink.rawText(comment);
         sink.paragraph_();
       }
 
       renderTableStart();
-      for (final Alias alias : group.getAliases())
-      {
+      for (final Alias alias : group.getAliases()) {
         renderTableRow(alias);
       }
       renderTableEnd();
