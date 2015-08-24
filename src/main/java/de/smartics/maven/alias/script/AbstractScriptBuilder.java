@@ -1,36 +1,35 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.script;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.ObjectUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
 import de.smartics.maven.alias.domain.ExtensionGroup;
 import de.smartics.maven.alias.domain.ScriptBuilder;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base implementation common to all script builders.
  */
-public abstract class AbstractScriptBuilder implements ScriptBuilder
-{
+public abstract class AbstractScriptBuilder implements ScriptBuilder {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -50,7 +49,8 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    * The value of this constant is {@value}.
    * </p>
    */
-  protected static final String BELL_VALUE = "\u0007";
+  protected static final String BELL_VALUE =
+      /* CHECKSTYLE:OFF */"\u0007";/* CHECKSTYLE:ON */
 
   // --- members --------------------------------------------------------------
 
@@ -116,8 +116,7 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    * @param id the identifier of the script builder.
    * @param aliasHelpName the alias name to use to print help to the console.
    */
-  public AbstractScriptBuilder(final String id, final String aliasHelpName)
-  {
+  public AbstractScriptBuilder(final String id, final String aliasHelpName) {
     this.id = id;
     this.aliasHelpName = aliasHelpName;
     maxAliasNameLength = aliasHelpName.length();
@@ -131,35 +130,23 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
 
   // --- get&set --------------------------------------------------------------
 
-  /**
-   * {@inheritDoc}
-   */
-  public final String getId()
-  {
+  @Override
+  public final String getId() {
     return id;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public final void setCommentIntro(final String commentIntro)
-  {
+  @Override
+  public final void setCommentIntro(final String commentIntro) {
     this.commentIntro = commentIntro;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public final void setCommentExtro(final String commentExtro)
-  {
+  @Override
+  public final void setCommentExtro(final String commentExtro) {
     this.commentExtro = commentExtro;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public final void setDocUrl(final String docUrl)
-  {
+  @Override
+  public final void setDocUrl(final String docUrl) {
     this.docUrl = docUrl;
   }
 
@@ -168,17 +155,13 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    *
    * @return the maximum length of a registered alias name.
    */
-  protected final int getMaxAliasNameLength()
-  {
+  protected final int getMaxAliasNameLength() {
     return maxAliasNameLength;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
   public final void setAddInstallationComment(
-      final boolean addInstallationComment)
-  {
+      final boolean addInstallationComment) {
     this.addInstallationComment = addInstallationComment;
   }
 
@@ -190,36 +173,26 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    *
    * @return the installation comment flag.
    */
-  protected final boolean isAddInstallationComment()
-  {
+  protected final boolean isAddInstallationComment() {
     return addInstallationComment;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
   public final void setExtensionGroups(
-      final List<ExtensionGroup> extensionGroups)
-  {
+      final List<ExtensionGroup> extensionGroups) {
     this.extensionGroups.addAll(extensionGroups);
   }
 
   // --- business -------------------------------------------------------------
 
-  /**
-   * {@inheritDoc}
-   */
-  public final void addAliases(final AliasGroup group)
-  {
+  @Override
+  public final void addAliases(final AliasGroup group) {
     final AliasGroup myGroup = group.filter(id);
 
-    if (!myGroup.isEmpty())
-    {
-      for (final Alias alias : myGroup.getAliases())
-      {
+    if (!myGroup.isEmpty()) {
+      for (final Alias alias : myGroup.getAliases()) {
         final int length = alias.getName().length();
-        if (length > maxAliasNameLength)
-        {
+        if (length > maxAliasNameLength) {
           maxAliasNameLength = length;
         }
       }
@@ -235,27 +208,22 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
    * @param script the script to append to.
    */
   protected final void appendExtensions(final StringBuilder helpAlias,
-      final StringBuilder script)
-  {
+      final StringBuilder script) {
     // FIXME echo may not be correct for every script...
     final List<ExtensionGroup> filteredGroups = filter(extensionGroups);
-    if (!filteredGroups.isEmpty())
-    {
+    if (!filteredGroups.isEmpty()) {
       helpAlias.append("echo  --- ALIAS EXTENSIONS").append(getCommandDelim());
 
-      for (final ExtensionGroup extension : filteredGroups)
-      {
+      for (final ExtensionGroup extension : filteredGroups) {
         helpAlias.append("echo  ...")
             .append(extension.getExtension().getName());
 
         final String mnemonic = extension.getExtension().getMnemonic();
-        if (StringUtils.isNotBlank(mnemonic))
-        {
+        if (StringUtils.isNotBlank(mnemonic)) {
           helpAlias.append(" (").append(mnemonic).append("):");
         }
 
-        for (final Alias alias : extension.getAliases())
-        {
+        for (final Alias alias : extension.getAliases()) {
           final String key =
               String.format("%1$-" + maxAliasNameLength + "s", alias.getName());
           appendAlias(script, alias, key);
@@ -273,17 +241,15 @@ public abstract class AbstractScriptBuilder implements ScriptBuilder
   // return normComment;
   // }
 
-  private List<ExtensionGroup> filter(final List<ExtensionGroup> extensionGroups)
-  {
+  private List<ExtensionGroup> filter(
+      final List<ExtensionGroup> extensionGroups) {
     final List<ExtensionGroup> filteredGroups =
         new ArrayList<ExtensionGroup>(extensionGroups.size());
 
     final String scriptEnv = getId();
-    for (final ExtensionGroup group : extensionGroups)
-    {
+    for (final ExtensionGroup group : extensionGroups) {
       final String env = group.getExtension().getEnv();
-      if (env == null || ObjectUtils.equals(scriptEnv, env))
-      {
+      if (env == null || ObjectUtils.equals(scriptEnv, env)) {
         filteredGroups.add(group);
       }
     }

@@ -1,32 +1,31 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.script;
-
-import java.util.StringTokenizer;
-
-import org.codehaus.plexus.util.StringUtils;
 
 import de.smartics.maven.alias.domain.Alias;
 import de.smartics.maven.alias.domain.AliasGroup;
 
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.StringTokenizer;
+
 /**
  * Creates an alias script for Linux Bash.
  */
-public final class BashScriptBuilder extends AbstractScriptBuilder
-{
+public final class BashScriptBuilder extends AbstractScriptBuilder {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -64,8 +63,7 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
    *
    * @param aliasHelpName the alias name to use to print help to the console.
    */
-  public BashScriptBuilder(final String aliasHelpName)
-  {
+  public BashScriptBuilder(final String aliasHelpName) {
     super(ID, aliasHelpName);
   }
 
@@ -78,18 +76,14 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
   // --- get&set --------------------------------------------------------------
 
   @Override
-  protected Object getCommandDelim()
-  {
+  protected Object getCommandDelim() {
     return COMMAND_DELIM;
   }
 
   // --- business -------------------------------------------------------------
 
-  /**
-   * {@inheritDoc}
-   */
-  public String createScript()
-  {
+  @Override
+  public String createScript() {
     final int maxAliasNameLength = getMaxAliasNameLength();
     final String helpKey =
         String.format("%-" + maxAliasNameLength + 's', aliasHelpName);
@@ -101,15 +95,12 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
     appendAsComment(script, this.commentIntro);
     appendInstallationComment(script);
 
-    for (final AliasGroup group : aliasGroups)
-    {
+    for (final AliasGroup group : aliasGroups) {
       helpAlias.append("echo \" --- ").append(group.getName()).append('\"')
           .append(COMMAND_DELIM);
-      for (final Alias alias : group.getAliases())
-      {
+      for (final Alias alias : group.getAliases()) {
         final String aliasEnv = alias.getEnv();
-        if (aliasEnv == null || ID.equals(aliasEnv))
-        {
+        if (aliasEnv == null || ID.equals(aliasEnv)) {
           final String key =
               String.format("%1$-" + maxAliasNameLength + "s", alias.getName());
           appendAlias(script, alias);
@@ -120,8 +111,7 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
 
     appendExtensions(helpAlias, script);
 
-    if (!aliasGroups.isEmpty())
-    {
+    if (!aliasGroups.isEmpty()) {
       helpAlias.append("echo \" --- \"").append("help").append(COMMAND_DELIM);
     }
 
@@ -135,29 +125,21 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
     return script.toString();
   }
 
-  private void appendDocUrl(final StringBuilder helpAlias)
-  {
-    if (StringUtils.isNotBlank(docUrl))
-    {
-      helpAlias
-          .append(COMMAND_DELIM)
+  private void appendDocUrl(final StringBuilder helpAlias) {
+    if (StringUtils.isNotBlank(docUrl)) {
+      helpAlias.append(COMMAND_DELIM)
           .append("echo -e \"For additional information please refer to: \\n  ")
           .append(docUrl).append('"');
     }
   }
 
-  private void appendInstallationComment(final StringBuilder script)
-  {
-    if (isAddInstallationComment())
-    {
-      script
-          .append("# ")
+  private void appendInstallationComment(final StringBuilder script) {
+    if (isAddInstallationComment()) {
+      script.append("# ")
           .append(
               "Add the aliases to your ~/.bashrc or source it from ~/.bash_profile like this:")
-          .append(NEWLINE)
-          .append("#   source PATH_TO_THIS_FILE")
-          .append(NEWLINE)
-          .append("# For further information please refer to")
+          .append(NEWLINE).append("#   source PATH_TO_THIS_FILE")
+          .append(NEWLINE).append("# For further information please refer to")
           .append(NEWLINE)
           .append(
               "#   http://tldp.org/LDP/Bash-Beginners-Guide/html/Bash-Beginners-Guide.html")
@@ -165,46 +147,37 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
     }
   }
 
-  private StringBuilder createHelpAliasStringBuffer()
-  {
+  private StringBuilder createHelpAliasStringBuffer() {
     final StringBuilder helpAlias = new StringBuilder(1024);
     helpAlias.append("alias ").append(aliasHelpName).append("='");
     // Unfortunately we have to remember to close the "'".
     return helpAlias;
   }
 
-  private void appendAlias(final StringBuilder script, final Alias alias)
-  {
+  private void appendAlias(final StringBuilder script, final Alias alias) {
     appendAlias(script, alias, null);
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
   protected void appendAlias(final StringBuilder script, final Alias alias,
-      final String key)
-  {
+      final String key) {
     // Bash always accepts appended arguments. So there is no check for pass.
     script.append("function ").append(alias.getName()).append("() { ");
-    final String command =
-        alias.getCommand().replace("{@args}", "$@")
-            .replace(BELL_VARIABLE, BELL_VALUE);
+    final String command = alias.getCommand().replace("{@args}", "$@")
+        .replace(BELL_VARIABLE, BELL_VALUE);
     script.append(command);
-    if (alias.isPassArgs())
-    {
+    if (alias.isPassArgs()) {
       script.append(" $@");
     }
     script.append("; }").append(NEWLINE);
   }
 
   private void appendHelp(final StringBuilder helpAlias, final Alias alias,
-      final String key)
-  {
+      final String key) {
     helpAlias.append("echo \" ").append(key).append(" = ")
         .append(alias.getCommand());
 
-    if (alias.isPassArgs())
-    {
+    if (alias.isPassArgs()) {
       helpAlias.append(" [args]");
     }
 
@@ -212,16 +185,13 @@ public final class BashScriptBuilder extends AbstractScriptBuilder
   }
 
   private static void appendAsComment(final StringBuilder script,
-      final String text)
-  {
-    if (StringUtils.isBlank(text))
-    {
+      final String text) {
+    if (StringUtils.isBlank(text)) {
       return;
     }
 
     final StringTokenizer tokenizer = new StringTokenizer(text, "\n");
-    while (tokenizer.hasMoreTokens())
-    {
+    while (tokenizer.hasMoreTokens()) {
       final String line = tokenizer.nextToken();
       script.append("# ").append(line).append(NEWLINE);
     }

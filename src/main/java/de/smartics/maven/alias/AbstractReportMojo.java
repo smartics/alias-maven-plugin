@@ -1,28 +1,21 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import de.smartics.maven.util.report.ReportUtils;
 
 import org.apache.commons.lang.LocaleUtils;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -42,15 +35,19 @@ import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.plexus.util.StringUtils;
 
-import de.smartics.maven.util.report.ReportUtils;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * The abstract base implementation for reports.
- *
- * @author <a href="mailto:robert.reiner@smartics.de">Robert Reiner</a>
  */
-public abstract class AbstractReportMojo extends AbstractMavenReport
-{
+public abstract class AbstractReportMojo extends AbstractMavenReport {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -160,8 +157,7 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    * @see org.apache.maven.reporting.AbstractMavenReport#getProject()
    */
   @Override
-  protected final MavenProject getProject()
-  {
+  protected final MavenProject getProject() {
     return project;
   }
 
@@ -171,8 +167,7 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    * @see org.apache.maven.reporting.AbstractMavenReport#getSiteRenderer()
    */
   @Override
-  protected final Renderer getSiteRenderer()
-  {
+  protected final Renderer getSiteRenderer() {
     return siteRenderer;
   }
 
@@ -186,8 +181,7 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    * @see org.apache.maven.reporting.AbstractMavenReport#getOutputDirectory()
    */
   @Override
-  protected final String getOutputDirectory()
-  {
+  protected final String getOutputDirectory() {
     return outputDirectory.getAbsolutePath();
   }
 
@@ -199,15 +193,12 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    *
    * @throws MojoExecutionException on any problem encountered.
    */
-  public void execute() throws MojoExecutionException // CHECKSTYLE:ON
-  {
+  public void execute() throws MojoExecutionException {
     final Log log = getLog();
-    if (!canGenerateReport())
-    {
-      if (log.isInfoEnabled())
-      {
+    if (!canGenerateReport()) {
+      if (log.isInfoEnabled()) {
         log.info("Report '" + getName(Locale.getDefault())
-                 + "' skipped due to offline mode.");
+            + "' skipped due to offline mode.");
       }
       return;
     }
@@ -215,15 +206,13 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
     provideSink();
   }
 
-  // CHECKSTYLE:OFF
   /**
    * {@inheritDoc}
    *
    * @see org.apache.maven.reporting.AbstractMavenReport#canGenerateReport()
    */
   @Override
-  public boolean canGenerateReport() // CHECKSTYLE:ON
-  {
+  public boolean canGenerateReport() {
     return super.canGenerateReport() && !skip;
   }
 
@@ -235,20 +224,19 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    *
    * @throws MojoExecutionException if the sink cannot be created.
    */
-  protected final void provideSink() throws MojoExecutionException
-  {
+  protected final void provideSink() throws MojoExecutionException {
     final Locale reportLocale = determineLocale();
 
-    try
-    {
+    try {
       final DecorationModel model = new DecorationModel();
       model.setBody(new Body());
       final Map<String, String> attributes = new HashMap<String, String>();
       attributes.put("outputEncoding", "UTF-8"); // TODO correct???
       final SiteRenderingContext siteContext =
-          siteRenderer.createContextForSkin(ReportUtils.getSkinArtifactFile(
-              project, localRepository, resolver, factory), attributes, model,
-              getName(reportLocale), reportLocale);
+          siteRenderer.createContextForSkin(
+              ReportUtils.getSkinArtifactFile(project, localRepository,
+                  resolver, factory),
+              attributes, model, getName(reportLocale), reportLocale);
 
       final RenderingContext context =
           new RenderingContext(outputDirectory, getOutputName() + ".html");
@@ -264,31 +252,23 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
           new FileWriter(new File(outputDirectory, getOutputName() + ".html"));
       siteRenderer.generateDocument(writer, sink, siteContext);
 
-      siteRenderer.copyResources(siteContext, new File(project.getBasedir(),
-          "src/site/resources"), outputDirectory);
-    }
-    catch (final RendererException e)
-    {
+      siteRenderer.copyResources(siteContext,
+          new File(project.getBasedir(), "src/site/resources"),
+          outputDirectory);
+    } catch (final RendererException e) {
       throw new MojoExecutionException(createErrorMessage(reportLocale), e);
-    }
-    catch (final IOException e)
-    {
+    } catch (final IOException e) {
       throw new MojoExecutionException(createErrorMessage(reportLocale), e);
-    }
-    catch (final MavenReportException e)
-    {
+    } catch (final MavenReportException e) {
       throw new MojoExecutionException(createErrorMessage(reportLocale), e);
     }
   }
 
-  private void provideDir() throws IOException
-  {
-    if (!outputDirectory.exists())
-    {
-      if (!outputDirectory.mkdirs()) // NOPMD
-      {
-        throw new IOException("Cannot generate directories '"
-                              + outputDirectory.getPath() + "'");
+  private void provideDir() throws IOException {
+    if (!outputDirectory.exists()) {
+      if (!outputDirectory.mkdirs()) {
+        throw new IOException(
+            "Cannot generate directories '" + outputDirectory.getPath() + "'");
       }
     }
   }
@@ -299,10 +279,9 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    * @param reportLocale the locale to select the report name.
    * @return the error message for failed report generation.
    */
-  private String createErrorMessage(final Locale reportLocale)
-  {
+  private String createErrorMessage(final Locale reportLocale) {
     return "An error has occurred in " + getName(reportLocale)
-           + " report generation.";
+        + " report generation.";
   }
 
   /**
@@ -311,10 +290,9 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    *
    * @return the locale to use for this report.
    */
-  private Locale determineLocale()
-  {
-    return StringUtils.isNotBlank(this.locale) ? LocaleUtils
-        .toLocale(this.locale) : Locale.getDefault();
+  private Locale determineLocale() {
+    return StringUtils.isNotBlank(this.locale)
+        ? LocaleUtils.toLocale(this.locale) : Locale.getDefault();
   }
 
   /**
@@ -323,10 +301,9 @@ public abstract class AbstractReportMojo extends AbstractMavenReport
    * @param locale the locale for which the resource bundle is requested.
    * @return the bundle for the given locale.
    */
-  protected final ResourceBundle getBundle(final Locale locale)
-  {
-    return ResourceBundle.getBundle(
-        "de.smartics.maven.alias.AliasReport", locale);
+  protected final ResourceBundle getBundle(final Locale locale) {
+    return ResourceBundle.getBundle("de.smartics.maven.alias.AliasReport",
+        locale);
   }
 
   // --- object basics --------------------------------------------------------

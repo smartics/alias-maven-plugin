@@ -1,19 +1,30 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias;
+
+import de.smartics.maven.alias.domain.AliasesProcessor;
+import de.smartics.maven.alias.domain.ScriptBuilder;
+import de.smartics.maven.alias.script.BashScriptBuilder;
+import de.smartics.maven.alias.script.WindowsScriptBuilder;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.xml.sax.InputSource;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -23,17 +34,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.xml.sax.InputSource;
-
-import de.smartics.maven.alias.domain.AliasesProcessor;
-import de.smartics.maven.alias.domain.ScriptBuilder;
-import de.smartics.maven.alias.script.BashScriptBuilder;
-import de.smartics.maven.alias.script.WindowsScriptBuilder;
 
 /**
  * Creates an alias script based on the alias configuration.
@@ -46,8 +46,7 @@ import de.smartics.maven.alias.script.WindowsScriptBuilder;
  * @author <a href="mailto:robert.reiner@smartics.de">Robert Reiner</a>
  * @version $Revision$
  */
-public class MavenAliasMojo extends AbstractMojo
-{
+public class MavenAliasMojo extends AbstractMojo {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -171,10 +170,8 @@ public class MavenAliasMojo extends AbstractMojo
    *
    * @see org.apache.maven.plugin.AbstractMojo#execute()
    */
-  public void execute() throws MojoExecutionException, MojoFailureException
-  {
-    if (!skip)
-    {
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    if (!skip) {
       final File scriptFolder = createScriptFolder();
 
       final ScriptBuilder[] builders = createBuilders();
@@ -184,77 +181,55 @@ public class MavenAliasMojo extends AbstractMojo
       processor.process(builders);
       logProcessingCompleted();
 
-      for (final ScriptBuilder builder : builders)
-      {
+      for (final ScriptBuilder builder : builders) {
         final String script = builder.createScript();
         writeScript(scriptFolder, builder.getId(), script);
       }
-    }
-    else
-    {
+    } else {
       getLog().info("Skipping alias plugin.");
     }
   }
 
   private void writeScript(final File scriptFolder, final String id,
-      final String script) throws MojoExecutionException
-  {
+      final String script) throws MojoExecutionException {
     final File scriptFile = new File(scriptFolder, id);
-    try
-    {
+    try {
       final OutputStream out =
           new BufferedOutputStream(new FileOutputStream(scriptFile));
-      try
-      {
+      try {
         IOUtils.write(script, out);
-      }
-      finally
-      {
+      } finally {
         IOUtils.closeQuietly(out);
       }
-    }
-    catch (final Exception e)
-    {
-      throw new MojoExecutionException("Cannot write script to '"
-                                       + scriptFile.getAbsolutePath() + "'.", e);
+    } catch (final Exception e) {
+      throw new MojoExecutionException(
+          "Cannot write script to '" + scriptFile.getAbsolutePath() + "'.", e);
     }
   }
 
   private AliasesProcessor createProcessor(final InputSource source)
-    throws MojoExecutionException
-  {
-    try
-    {
+      throws MojoExecutionException {
+    try {
       return new AliasesProcessor(source);
-    }
-    catch (final Exception e)
-    {
-      throw new MojoExecutionException("Cannot read alias XML from '"
-                                       + source.getSystemId() + "'.", e);
+    } catch (final Exception e) {
+      throw new MojoExecutionException(
+          "Cannot read alias XML from '" + source.getSystemId() + "'.", e);
     }
   }
 
-  private ScriptBuilder[] createBuilders()
-  {
-    if (scripts == null || scripts.length == 0)
-    {
-      scripts = new String[] { WindowsScriptBuilder.ID, BashScriptBuilder.ID };
+  private ScriptBuilder[] createBuilders() {
+    if (scripts == null || scripts.length == 0) {
+      scripts = new String[] {WindowsScriptBuilder.ID, BashScriptBuilder.ID};
     }
 
     final ScriptBuilder[] builders = new ScriptBuilder[scripts.length];
-    int i = 0;
-    for (final String script : scripts)
-    {
-      if (WindowsScriptBuilder.ID.equals(script))
-      {
-        builders[i++] = createWindowsScriptBuilder();
-      }
-      else if (BashScriptBuilder.ID.equals(script))
-      {
-        builders[i++] = createBashScriptBuilder();
-      }
-      else
-      {
+    int counter = 0;
+    for (final String script : scripts) {
+      if (WindowsScriptBuilder.ID.equals(script)) {
+        builders[counter++] = createWindowsScriptBuilder();
+      } else if (BashScriptBuilder.ID.equals(script)) {
+        builders[counter++] = createBashScriptBuilder();
+      } else {
         getLog().info("Skipping unrecognized script type '" + script + "'.");
       }
     }
@@ -262,20 +237,17 @@ public class MavenAliasMojo extends AbstractMojo
     return builders;
   }
 
-  private ScriptBuilder createWindowsScriptBuilder()
-  {
+  private ScriptBuilder createWindowsScriptBuilder() {
     final ScriptBuilder builder = new WindowsScriptBuilder(helpAlias);
     return initScriptBuilder(builder);
   }
 
-  private ScriptBuilder createBashScriptBuilder()
-  {
+  private ScriptBuilder createBashScriptBuilder() {
     final ScriptBuilder builder = new BashScriptBuilder(helpAlias);
     return initScriptBuilder(builder);
   }
 
-  private ScriptBuilder initScriptBuilder(final ScriptBuilder builder)
-  {
+  private ScriptBuilder initScriptBuilder(final ScriptBuilder builder) {
     builder.setCommentIntro(intro);
     builder.setCommentExtro(extro);
     builder.setDocUrl(docUrl);
@@ -283,39 +255,31 @@ public class MavenAliasMojo extends AbstractMojo
     return builder;
   }
 
-  private File createScriptFolder() throws MojoExecutionException
-  {
+  private File createScriptFolder() throws MojoExecutionException {
     final File file = new File(scriptLocation);
-    if (!file.exists() && !file.mkdirs())
-    {
-      throw new MojoExecutionException("Cannot create destination folder '"
-                                       + scriptLocation + "'.");
+    if (!file.exists() && !file.mkdirs()) {
+      throw new MojoExecutionException(
+          "Cannot create destination folder '" + scriptLocation + "'.");
     }
     return file;
   }
 
-  private InputSource createSource() throws MojoExecutionException
-  {
+  private InputSource createSource() throws MojoExecutionException {
     final File file = new File(aliasLocation);
-    try
-    {
+    try {
       final InputStream in = new BufferedInputStream(new FileInputStream(file));
       final InputSource source = new InputSource();
       source.setSystemId(aliasLocation);
       source.setByteStream(in);
       return source;
-    }
-    catch (final FileNotFoundException e)
-    {
-      throw new MojoExecutionException("Cannot read alias XML file '"
-                                       + aliasLocation + "'.", e);
+    } catch (final FileNotFoundException e) {
+      throw new MojoExecutionException(
+          "Cannot read alias XML file '" + aliasLocation + "'.", e);
     }
   }
 
-  private void logProcessingCompleted()
-  {
-    if (verbose)
-    {
+  private void logProcessingCompleted() {
+    if (verbose) {
       getLog().info("Alias script generated successfully.");
     }
   }

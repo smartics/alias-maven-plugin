@@ -1,19 +1,24 @@
 /*
  * Copyright 2012-2015 smartics, Kronseder & Reiner GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package de.smartics.maven.alias.script;
+
+import de.smartics.maven.alias.domain.Alias;
+import de.smartics.maven.alias.domain.AliasGroup;
+
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,16 +26,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
-import org.codehaus.plexus.util.StringUtils;
-
-import de.smartics.maven.alias.domain.Alias;
-import de.smartics.maven.alias.domain.AliasGroup;
-
 /**
  * Creates an alias script for Windows.
  */
-public final class WindowsScriptBuilder extends AbstractScriptBuilder
-{
+public final class WindowsScriptBuilder extends AbstractScriptBuilder {
   // ********************************* Fields *********************************
 
   // --- constants ------------------------------------------------------------
@@ -72,8 +71,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
 
   // ****************************** Initializer *******************************
 
-  static
-  {
+  static {
     HELP_ALIAS_COMMAND_REPLACEMENTS.put("$T", ":");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put(">", "to");
     HELP_ALIAS_COMMAND_REPLACEMENTS.put("&", ";");
@@ -88,8 +86,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
    *
    * @param aliasHelpName the alias name to use to print help to the console.
    */
-  public WindowsScriptBuilder(final String aliasHelpName)
-  {
+  public WindowsScriptBuilder(final String aliasHelpName) {
     super(ID, aliasHelpName);
   }
 
@@ -102,18 +99,14 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   // --- get&set --------------------------------------------------------------
 
   @Override
-  protected Object getCommandDelim()
-  {
+  protected Object getCommandDelim() {
     return COMMAND_DELIM;
   }
 
   // --- business -------------------------------------------------------------
 
-  /**
-   * {@inheritDoc}
-   */
-  public String createScript()
-  {
+  @Override
+  public String createScript() {
     final int maxAliasNameLength = getMaxAliasNameLength();
     this.helpKey =
         String.format("%-" + maxAliasNameLength + 's', aliasHelpName);
@@ -125,15 +118,12 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     appendAsComment(script, this.commentIntro);
     appendInstallationComment(script);
 
-    for (final AliasGroup group : aliasGroups)
-    {
+    for (final AliasGroup group : aliasGroups) {
       helpAlias.append("echo  --- ").append(group.getName())
           .append(COMMAND_DELIM);
-      for (final Alias alias : group.getAliases())
-      {
+      for (final Alias alias : group.getAliases()) {
         final String aliasEnv = alias.getEnv();
-        if (aliasEnv == null || ID.equals(aliasEnv))
-        {
+        if (aliasEnv == null || ID.equals(aliasEnv)) {
           final String key =
               String.format("%1$-" + maxAliasNameLength + "s", alias.getName());
           appendAlias(script, alias, key);
@@ -144,8 +134,7 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
 
     appendExtensions(helpAlias, script);
 
-    if (!aliasGroups.isEmpty())
-    {
+    if (!aliasGroups.isEmpty()) {
       helpAlias.append("echo  --- ").append("help").append(COMMAND_DELIM);
     }
 
@@ -159,22 +148,17 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     return script.toString();
   }
 
-  private void appendDocUrl(final StringBuilder helpAlias)
-  {
-    if (StringUtils.isNotBlank(docUrl))
-    {
+  private void appendDocUrl(final StringBuilder helpAlias) {
+    if (StringUtils.isNotBlank(docUrl)) {
       helpAlias.append(COMMAND_DELIM)
           .append("echo For additional information please refer to: ")
           .append(COMMAND_DELIM).append("echo   ").append(docUrl);
     }
   }
 
-  private void appendInstallationComment(final StringBuilder script)
-  {
-    if (isAddInstallationComment())
-    {
-      script
-          .append("REM ")
+  private void appendInstallationComment(final StringBuilder script) {
+    if (isAddInstallationComment()) {
+      script.append("REM ")
           .append(
               "Add this script to the registry to be called on each instantiation of the command shell:")
           .append(NEWLINE)
@@ -186,27 +170,21 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
     }
   }
 
-  private StringBuilder createHelpAliasStringBuffer()
-  {
+  private StringBuilder createHelpAliasStringBuffer() {
     final StringBuilder helpAlias = new StringBuilder(1024);
     helpAlias.append("doskey ").append(helpKey).append(" = "); // NOPMD
     return helpAlias;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
   protected void appendAlias(final StringBuilder script, final Alias alias,
-      final String key)
-  {
+      final String key) {
     script.append("doskey ").append(key).append(" = ");
-    final String command =
-        alias.getCommand().replace("{@args}", "$*")
-            .replace(BELL_VARIABLE, BELL_VALUE);
+    final String command = alias.getCommand().replace("{@args}", "$*")
+        .replace(BELL_VARIABLE, BELL_VALUE);
     script.append(command);
 
-    if (alias.isPassArgs())
-    {
+    if (alias.isPassArgs()) {
       script.append(" $*");
     }
 
@@ -214,27 +192,23 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   }
 
   private void appendHelp(final StringBuilder helpAlias, final Alias alias,
-      final String key)
-  {
+      final String key) {
     helpAlias.append("echo  ").append(key).append(" = ")
         .append(escapeCommandForHelp(alias.getCommand()));
 
-    if (alias.isPassArgs())
-    {
+    if (alias.isPassArgs()) {
       helpAlias.append(" [args]");
     }
 
     helpAlias.append(COMMAND_DELIM);
   }
 
-  private String escapeCommandForHelp(final String command)
-  {
+  private String escapeCommandForHelp(final String command) {
 
     String escapedCommand = command;
     for (final Iterator<Entry<String, String>> iterator =
         HELP_ALIAS_COMMAND_REPLACEMENTS.entrySet().iterator(); iterator
-        .hasNext();)
-    {
+            .hasNext();) {
       final Entry<String, String> entry = iterator.next();
       escapedCommand = escapedCommand.replace(entry.getKey(), entry.getValue());
     }
@@ -242,16 +216,13 @@ public final class WindowsScriptBuilder extends AbstractScriptBuilder
   }
 
   private static void appendAsComment(final StringBuilder script,
-      final String text)
-  {
-    if (StringUtils.isBlank(text))
-    {
+      final String text) {
+    if (StringUtils.isBlank(text)) {
       return;
     }
 
     final StringTokenizer tokenizer = new StringTokenizer(text, "\n");
-    while (tokenizer.hasMoreTokens())
-    {
+    while (tokenizer.hasMoreTokens()) {
       final String line = tokenizer.nextToken();
       script.append("REM ").append(line).append(NEWLINE);
     }
