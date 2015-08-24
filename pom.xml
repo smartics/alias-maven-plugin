@@ -52,9 +52,10 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:https://www.smartics.eu/svn/public/maven/alias-maven-plugin/trunk</connection>
-    <developerConnection>scm:svn:https://www.smartics.eu/svn/public/maven/alias-maven-plugin/trunk</developerConnection>
-    <url>https://www.smartics.eu/svn/public/maven/alias-maven-plugin/trunk</url>
+    <connection>scm:git:git@github.com:smartics/alias-maven-plugin</connection>
+    <developerConnection>scm:git:git@github.com:smartics/alias-maven-plugin</developerConnection>
+    <url>https://github.com/smartics/alias-maven-plugin</url>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
