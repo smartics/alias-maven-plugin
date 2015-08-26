@@ -146,7 +146,7 @@
     <version.maven-scm-plugin>1.9.4</version.maven-scm-plugin>
     <version.maven-site-plugin>3.4</version.maven-site-plugin>
     <version.maven-source-plugin>2.4</version.maven-source-plugin>
-    <version.maven-plugin-plugin>3.2</version.maven-plugin-plugin>
+    <version.maven-plugin-plugin>3.4</version.maven-plugin-plugin>
     <version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
     <version.ant-nodeps>1.8.1</version.ant-nodeps>
     <version.ant-trax>1.8.0</version.ant-trax>
