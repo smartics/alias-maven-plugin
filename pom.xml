@@ -1,14 +1,11 @@
 <?xml version='1.0'?>
 
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>de.smartics.maven.plugin</groupId>
   <artifactId>alias-maven-plugin</artifactId>
-  <version>0.3.4-SNAPSHOT</version>
+  <version>0.3.4</version>
   <packaging>maven-plugin</packaging>
 
   <name>Alias Maven Plugin</name>
@@ -55,7 +52,7 @@
     <connection>scm:git:git@github.com:smartics/alias-maven-plugin</connection>
     <developerConnection>scm:git:git@github.com:smartics/alias-maven-plugin</developerConnection>
     <url>https://github.com/smartics/alias-maven-plugin</url>
-    <tag>HEAD</tag>
+    <tag>alias-maven-plugin-0.3.4</tag>
   </scm>
 
   <issueManagement>
@@ -497,10 +494,7 @@
             </goals>
             <configuration>
               <target>
-                <xslt
-                  in="${basedir}/src/main/resources/alias.xsd"
-                  out="${project.build.directory}/generated-site/xdoc/alias-doc.xml"
-                  style="${basedir}/src/etc/create-alias-doc.xsl" />
+                <xslt in="${basedir}/src/main/resources/alias.xsd" out="${project.build.directory}/generated-site/xdoc/alias-doc.xml" style="${basedir}/src/etc/create-alias-doc.xsl" />
                 <copy todir="${project.build.directory}/generated-site/resources/download">
                   <fileset dir="${basedir}/src/main/resources/">
                     <include name="**/*.xsd" />
