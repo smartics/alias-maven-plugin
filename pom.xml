@@ -127,7 +127,7 @@
     <build.server.site.upload>scp://www.smartics.eu/home/smartics/public_html/${info.project.visibility}</build.server.site.upload>
     <build.server.repo.upload>dav:${info.server.repo.prefix}/repositories</build.server.repo.upload>
 
-    <maven-fluido-smartics-skin_version>2.0.4</maven-fluido-smartics-skin_version>
+    <maven-fluido-smartics-skin_version>2.1.0</maven-fluido-smartics-skin_version>
 
     <version.buildmetadata-maven-plugin>1.5.0.RC1</version.buildmetadata-maven-plugin>
     <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
