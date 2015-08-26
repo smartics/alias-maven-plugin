@@ -120,12 +120,17 @@
     <info.server.issues>https://www.smartics.eu/jira/projects</info.server.issues>
     <info.server.repo>https://www.smartics.eu/nexus</info.server.repo>
     <info.server.scm>https://www.smartics.eu/svn/public</info.server.scm>
+    <info.server.site>https://www.smartics.eu</info.server.site>
 
     <info.server.repo.prefix>${info.server.repo}/content</info.server.repo.prefix>
     <info.server.repo.group>${info.server.repo.prefix}/groups/public-group</info.server.repo.group>
 
     <build.server.site.upload>scp://www.smartics.eu/home/smartics/public_html/${info.project.visibility}</build.server.site.upload>
     <build.server.repo.upload>dav:${info.server.repo.prefix}/repositories</build.server.repo.upload>
+
+    <webroot>${info.server.site}</webroot>
+    <weburl>${info.server.site}/${project.groupId}/${project.artifactId}/${project.version}</weburl>
+    <webroot-projects>http://www.smartics.de/projects</webroot-projects>
 
     <maven-fluido-smartics-skin_version>2.1.0</maven-fluido-smartics-skin_version>
 
@@ -469,6 +474,7 @@
             <exclude>LICENSE-*</exclude>
             <exclude>src/etc/license/javadoc.xml</exclude>
             <exclude>src/etc/license/header.txt</exclude>
+            <exclude>**/*.md</exclude>
           </excludes>
           <mapping>
             <!--  Unfortunately we use xml.vm extensions to filter xdoc pages.
