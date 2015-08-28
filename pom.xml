@@ -10,8 +10,10 @@
 
   <name>Alias Maven Plugin</name>
   <description>
-    Generates alias shell scripts to provide ease of use of commonly used shell
-    commands by a team.
+    Generates alias shell scripts to provide ease of use for commonly used shell
+    commands. Documentation for the specified aliases is generated and
+    available from the shell. This makes it easy for a team to share useful
+    aliases.
   </description>
   <url>${weburl}</url>
   <inceptionYear>2012</inceptionYear>
