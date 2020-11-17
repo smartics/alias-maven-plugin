@@ -1,5 +1,6 @@
 <?xml version='1.0'?>
 
+<!--suppress UnresolvedMavenProperty -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -252,8 +253,8 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>${version.maven-jar-plugin}</version>
           <configuration>
-            <index>true</index>
             <archive>
+              <index>true</index>
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -316,6 +317,7 @@
           </configuration>
         </plugin>
 
+        <!--
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -383,7 +385,7 @@
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
-        </plugin>
+        </plugin> -->
 
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -610,7 +612,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${maven-plugin-plugin.version}</version>
+        <version>${version.maven-plugin-plugin}</version>
       </plugin>
     </plugins>
   </reporting>
